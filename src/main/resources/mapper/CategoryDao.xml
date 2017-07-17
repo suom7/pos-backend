@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.backend.dao.CategoryDao">
+
+	<resultMap type='com.backend.domain.Category' id='categoryResult'>
+		<id property='id' column='id' />
+		<result property='name' column='name' />
+		<result property='state' column='state' />
+		<result property='createdDate' column='createdDate' />
+		<result property='createdByUserId' column='createdByUserId' />
+		<result property='updatedDate' column='updatedDate' />
+		<result property='updatedByUserId' column='updatedByUserId' />
+	</resultMap>
+
+	<select id="findById" resultType="com.backend.domain.Category">
+		SELECT *FROM Category WHERE id
+		= #{id}
+	</select>
+
+	<select id="findByFields" parameterType="map" resultMap="categoryResult">
+		SELECT *
+		FROM Category
+		<if test="_parameter != null">
+			<include refid="generic_where_clause_and" />
+		</if>
+	</select>
+
+	<insert id="add" parameterType="com.backend.domain.Category"
+		useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+		INSERT INTO
+		Category
+		(
+		name,
+		note,
+		createdDate,
+		createdByUserId
+		)
+		VALUES
+		(
+		#{name},
+		#{note},
+		#{createdDate},
+		#{createdByUserId}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.backend.domain.Category">
+		UPDATE Category
+		SET
+		name =
+		#{name},
+		state = #{state},
+		note = #{note},
+		createdDate = #{createdDate},
+		createdByUserId = #{createdByUserId},
+		updatedDate = #{updatedDate},
+		updatedByUserId = #{updatedByUserId}
+		WHERE id = #{id}
+	</update>
+
+	<delete id="remove" parameterType="long">
+		DELETE FROM Category
+		WHERE id =
+		#{id}
+	</delete>
+
+	<select id="count" resultType="Integer">
+		SELECT COUNT(*)
+		FROM Category
+	</select>
+
+	<select id="getAll" parameterType="map" resultMap='categoryResult'>
+		SELECT *
+		FROM
+		Category
+		WHERE state=1
+	</select>
+
+	<select id="getPageItems" parameterType="map" resultMap="categoryResult">
+		SELECT *FROM Category
+		LIMIT #{limit} OFFSET
+		<if test="offset != null">
+			${offset}
+		</if>
+		<if test="offset == null">
+			0
+		</if>
+	</select>
+
+	<select id="getPageItemsWithFields" parameterType="map" resultMap="categoryResult">
+		SELECT *FROM Category
+		<if test="_parameter != null">
+			<include refid="generic_where_clause_and" />
+		</if>
+		<if test="sortBy != null">
+			ORDER BY ${sortBy}
+			<if test="isAscending == true">
+				ASC
+			</if>
+			<if test="isAscending == false">
+				DESC
+			</if>
+		</if>
+
+		LIMIT #{limit} OFFSET
+		<if test="offset != null">
+			${offset}
+		</if>
+		<if test="offset == null">
+			0
+		</if>
+	</select>
+
+	<select id="countWithFilters" resultType="Integer">
+		SELECT COUNT(*) FROM Category
+		<if test="_parameter != null">
+			<include refid="generic_where_clause_and" />
+		</if>
+	</select>
+
+	<sql id="generic_where_clause_and">
+		<where>
+			<trim prefixOverrides="AND ">
+				<if test="domain.state != null">
+					state=#{domain.state}
+				</if>
+			</trim>
+		</where>
+	</sql>
+</mapper>

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.backend.dao.ProductDao">
+
+	<resultMap type='com.backend.domain.Product' id='productResult'>
+		<id property='id' column='id' />
+		<result property='name' column='name' />
+		<result property='categoryId' column='categoryId' />
+		<result property='categoryName' column='categoryName' />
+		<result property='image' column='image' />
+		<result property='note' column='note' />
+		<result property='state' column='state' />
+		<result property='createdDate' column='createdDate' />
+		<result property='createdByUserId' column='createdByUserId' />
+		<result property='updatedDate' column='updatedDate' />
+		<result property='updatedByUserId' column='updatedByUserId' />
+	</resultMap>
+
+	<select id="findById" resultType="com.backend.domain.Product">
+		SELECT *FROM Product WHERE id
+		= #{id}
+	</select>
+
+	<select id="findByFields" parameterType="map" resultMap="productResult">
+		SELECT *
+		FROM Product
+		<if test="_parameter != null">
+			<include refid="generic_where_clause_and" />
+		</if>
+	</select>
+
+	<insert id="add" parameterType="com.backend.domain.Product"
+		useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+		INSERT INTO
+		Product
+		(
+			name,
+			categoryId,
+			categoryName,
+			image,
+			note,
+			createdDate,
+			createdByUserId
+		)
+		VALUES
+		(
+			#{name},
+			#{categoryId},
+			#{categoryName},
+			#{image},
+			#{note},
+			#{createdDate},
+			#{createdByUserId}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.backend.domain.Product">
+		UPDATE Product
+		SET
+			name = #{name},
+			categoryId = #{categoryId},
+			categoryName = #{categoryName},
+			image = #{image},
+			note = #{note},
+			state= #{state},
+			createdDate = #{createdDate},
+			createdByUserId = #{createdByUserId},
+			updatedDate = #{updatedDate},
+			updatedByUserId = #{updatedByUserId}
+		WHERE id = #{id}
+	</update>
+
+	<delete id="remove" parameterType="long">
+		DELETE FROM Product
+		WHERE id =
+		#{id}
+	</delete>
+
+	<select id="count" resultType="Integer">
+		SELECT COUNT(*)
+		FROM Product
+	</select>
+
+	<select id="getAll" parameterType="map" resultMap='productResult'>
+		SELECT *
+		FROM
+		Product
+		WHERE state=1
+	</select>
+
+	<select id="getPageItems" parameterType="map" resultMap="productResult">
+		SELECT *FROM Product
+		LIMIT #{limit} OFFSET
+		<if test="offset != null">
+			${offset}
+		</if>
+		<if test="offset == null">
+			0
+		</if>
+	</select>
+
+	<select id="getPageItemsWithFields" parameterType="map" resultMap="productResult">
+		SELECT *FROM Product
+		<if test="_parameter != null">
+			<include refid="generic_where_clause_and" />
+		</if>
+		<if test="sortBy != null">
+			ORDER BY ${sortBy}
+			<if test="isAscending == true">
+				ASC
+			</if>
+			<if test="isAscending == false">
+				DESC
+			</if>
+		</if>
+
+		LIMIT #{limit} OFFSET
+		<if test="offset != null">
+			${offset}
+		</if>
+		<if test="offset == null">
+			0
+		</if>
+	</select>
+
+	<select id="countWithFilters" resultType="Integer">
+		SELECT COUNT(*) FROM Product
+		<if test="_parameter != null">
+			<include refid="generic_where_clause_and" />
+		</if>
+	</select>
+
+	<sql id="generic_where_clause_and">
+		<where>
+			<trim prefixOverrides="AND ">
+				<if test="domain.state != null">
+					state=#{domain.state}
+				</if>
+				<if test="domain.categoryId != null">
+					categoryId=#{domain.categoryId}
+				</if>
+			</trim>
+		</where>
+	</sql>
+</mapper>
