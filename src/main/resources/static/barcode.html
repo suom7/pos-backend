@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+     <meta charset="UTF-8">
+     <title>Available the `bootstrap-material-design`!</title>
+     <script src="node_modules/jquery/dist/jquery.min.js"></script>
+     <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+     <script src="node_modules/bootstrap-material-design/dist/js/material.min.js"></script>
+     <script src="node_modules/bootstrap-material-design/dist/js/ripples.min.js"></script>
+     <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+     <link href="node_modules/bootstrap-material-design/dist/css/bootstrap-material-design.min.css" rel="stylesheet">
+     <link href="node_modules/bootstrap-material-design/dist/css/ripples.min.css" rel="stylesheet">
+
+     <script>
+          $(function() {
+               $.material.init();
+          });
+          $(function() {
+               $('#generateBarcode').on('click', function() {
+
+               });
+          });
+
+     </script>
+     <style rel="stylesheet">
+          html,
+          body {
+               height: 100%;
+          }
+
+     </style>
+</head>
+
+<body style="background-color: #fff;">
+     <div class="container-fluid">
+          <div class="row">
+               <div class = "col-sm-4">
+                    <div class="form-group">
+                         <input type="file" id="inputFile4" multiple="">
+                         <div class="input-group">
+                              <input type="text" readonly="" class="form-control" placeholder="Placeholder w/file chooser...">
+                              <span class="input-group-btn input-group-sm">
+                                   <button type="button" class="btn btn-fab btn-fab-mini">
+                                        <i class="material-icons">attach_file</i>
+                                   </button>
+                              </span>
+                         </div>
+                    </div>
+                    <a href="javascript:void(0)" class="btn btn-raised btn-primary">Primary</a>
+               </div>
+          </div>
+     </div>
+</body>
+
+</html>
+
+
