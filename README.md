@@ -31,7 +31,8 @@ Spring Boot (Java 8)
 
 ### Spring DevTools
 
-	Enable hot reloading, so every time we make a change in our files an application restart will be triggered automatically
+	Enable hot reloading, so every time we make a change in our 
+	files an application restart will be triggered automatically
 
 ### Initialize DB 
 

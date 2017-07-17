@@ -45,6 +45,7 @@ dependencies {
 	compile('commons-validator:commons-validator:1.6')
 	compile('io.springfox:springfox-swagger2:2.7.0')
 	compile('io.springfox:springfox-swagger-ui:2.7.0')
+    compile ('net.sf.barcode4j:barcode4j:2.1')
 	runtime('com.h2database:h2')
 	providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
