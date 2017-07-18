@@ -19,4 +19,8 @@ public class Barcode implements Serializable {
 
     @CsvBindByName(column = "Description", required = true)
     private String description;
+    
+    @CsvBindByName(column = "Category", required = true)
+    private String category;
+    
 }

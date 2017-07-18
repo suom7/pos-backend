@@ -17,9 +17,75 @@
                $.material.init();
           });
           $(function() {
-               $('#generateBarcode').on('click', function() {
 
+               $('#generateBarcode').on('click', function() {
+                   submitRequest($("#barcodeId").val(), $("#barcodeImage") );
                });
+               $('input[type=radio][name=bar]').change(function() {
+                  if (this.value == 1) {
+                      $('#form-input-file').removeClass('hidden');
+                      $('#form-input-text').addClass('hidden');
+                  }
+                  else if (this.value == 0) {
+                      $('#form-input-text').removeClass('hidden');
+                      $('#form-input-file').addClass('hidden');
+                  }
+
+              });
+
+              $("#submit").on('click', (function(e) {
+                  var formData = new FormData();
+                  formData.append("file", $('#file')[0].files[0]);
+                  $.ajax({
+                      url: 'resources/import/csv',
+                      method: 'POST',             // Type of request to be send, called as method
+                      contentType: false,       // The content type used when sending data to the server.
+                      cache: false,             // To unable request pages to be cached
+                      processData:false,
+                      data: formData,
+                      success: function(data, textStatus, jqXHR){
+                          console.log(data);
+                          $.each(data, function( index, value ) {
+                              $("#title").text(value.category);
+                              //$(".wrapper").append('<div><p>'+ value.description +'</p> <img class="barcode-image" src="data:image/jpeg;base64,'+ arrayBufferToBase64(data) +'"/></div>');
+                              $(".wrapper").append('<div><p>'+ value.description +'</p> <img class="barcode-image" data-code="'+ value.barcodeId +'"/></div>');
+                          });
+                          $.each($(".barcode-image"), function (e) {
+                              console.log($(this).data("code"));
+                              submitRequest($(this).data("code"), $(this))
+                          });
+
+                          $(".wrapper").removeClass("hidden");
+                          $(".container").empty();
+
+                      },
+                      error: function(jqXHR, textStatus, errorThrown){
+                          console.log(data);
+                      }
+                  });
+              }));
+
+              function submitRequest(barcode, element) {
+                  var xhr = new XMLHttpRequest();
+                  xhr.open('GET', '/resources/v1/barcode?barcode=' + barcode, true);
+                  xhr.responseType = 'arraybuffer';
+                  xhr.onload = function(e) {
+                      if (this.status == 200) {
+                          $(element).attr("src", 'data:image/jpeg;base64,' + arrayBufferToBase64(this.response));
+                      }
+                  }
+                  xhr.send();
+              }
+              var arrayBufferToBase64 = function(buffer) {
+                  var binary = '';
+                  var bytes = new Uint8Array(buffer);
+                  var len = bytes.byteLength;
+                  for (var i = 0; i < len; i++) {
+                      binary += String.fromCharCode( bytes[ i ] );
+                  }
+                  return window.btoa( binary );
+              }
+              
           });
 
      </script>
@@ -27,28 +93,85 @@
           html,
           body {
                height: 100%;
+               margin-top: 30px;
           }
-
+          p {
+               font-size:16px;
+               margin: 0 0 2px;
+          }
+          .wrapper {
+               margin-top: 50px;
+               display: grid;
+               text-align: center;
+               grid-template-columns: repeat(3, 250px);
+               grid-gap: 150px;
+               background-color: #fff;
+               color: #444;
+          }
      </style>
 </head>
 
 <body style="background-color: #fff;">
-     <div class="container-fluid">
+     <div class="container">
           <div class="row">
-               <div class = "col-sm-4">
-                    <div class="form-group">
-                         <input type="file" id="inputFile4" multiple="">
-                         <div class="input-group">
-                              <input type="text" readonly="" class="form-control" placeholder="Placeholder w/file chooser...">
-                              <span class="input-group-btn input-group-sm">
-                                   <button type="button" class="btn btn-fab btn-fab-mini">
-                                        <i class="material-icons">attach_file</i>
-                                   </button>
-                              </span>
-                         </div>
+               <div class="form-group">
+                    <div class="radio">
+                         <label>
+                              <input type="radio" name="bar" value="0" checked="true">
+                              Generate barcode
+                         </label>
                     </div>
-                    <a href="javascript:void(0)" class="btn btn-raised btn-primary">Primary</a>
+                    <div class="radio">
+                         <label>
+                              <input type="radio" name="bar" value="1">
+                              Generate multi barcode with CSV
+                         </label>
+                    </div>
                </div>
+          </div>
+          <div class="row">
+               <div class="col-sm-4">
+                    <form id="form-input-text">
+                         <div class="form-group">
+                              <label for="barcodeId" class="control-label col-sm-2">Enter BarcodeId</label>
+                              <div class="col-sm-10">
+                                   <input type="text" class="form-control" id="barcodeId">
+                              </div>
+                         </div>
+                         <div class="form-group">
+                              <div class="col-md-10 col-md-offset-2">
+                                   <button type="button" class="btn btn-primary" id="generateBarcode">Submit</button>
+                              </div>
+                         </div>
+                    </form>
+                    <from id="form-input-file" enctype="multipart/form-data" method="post" name="form" class ="hidden">
+                         <div class="form-group">
+                              <label for="file" class="col-md-2 control-label">File</label>
+                              <div class="col-md-10">
+                                   <input type="text" readonly="" class="form-control" placeholder="Browse...">
+                                   <input type="file" name="file" id="file" required multiple="">
+                              </div>
+                         </div>
+                         <div class="form-group">
+                              <div class="col-md-10 col-md-offset-2">
+                                   <button type="submit" class="btn btn-primary" id="submit">Submit</button>
+                              </div>
+                         </div>
+                    </from>
+               </div>
+          </div>
+          <div class = "row" >
+               <div class = "col-sm-offset-4 col-sm-4">
+                    <img id="barcodeImage"/>
+               </div>
+          </div>
+     </div>
+     <div class="container-fluid">
+          <div style = "text-align: center;">
+               <h1 id="title"></h1>
+          </div>
+          <div class="wrapper hidden">
+
           </div>
      </div>
 </body>
