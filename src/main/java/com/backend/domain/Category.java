@@ -1,7 +1,6 @@
 package com.backend.domain;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -15,8 +14,5 @@ public class Category extends AbstractLongDomainEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     private Long id;
     private String name;
-    private String note;
-    private Long createdByUserId;
-    private Date createdDate;
-    private Long updatedByUserId;
+    private String type;
 }

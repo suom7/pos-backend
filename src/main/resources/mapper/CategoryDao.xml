@@ -7,21 +7,22 @@
 	<resultMap type='com.backend.domain.Category' id='categoryResult'>
 		<id property='id' column='id' />
 		<result property='name' column='name' />
+		<result property='type' column='type' />
 		<result property='state' column='state' />
 		<result property='createdDate' column='createdDate' />
-		<result property='createdByUserId' column='createdByUserId' />
+		<result property='createdBy' column='createdBy' />
 		<result property='updatedDate' column='updatedDate' />
-		<result property='updatedByUserId' column='updatedByUserId' />
+		<result property='updatedBy' column='updatedBy' />
 	</resultMap>
 
 	<select id="findById" resultType="com.backend.domain.Category">
-		SELECT *FROM Category WHERE id
+		SELECT *FROM category WHERE id
 		= #{id}
 	</select>
 
 	<select id="findByFields" parameterType="map" resultMap="categoryResult">
 		SELECT *
-		FROM Category
+		FROM category
 		<if test="_parameter != null">
 			<include refid="generic_where_clause_and" />
 		</if>
@@ -30,56 +31,53 @@
 	<insert id="add" parameterType="com.backend.domain.Category"
 		useGeneratedKeys="true" keyProperty="id" keyColumn="id">
 		INSERT INTO
-		Category
+		category
 		(
 		name,
-		note,
+		type,
 		createdDate,
-		createdByUserId
+		createdBy
 		)
 		VALUES
 		(
 		#{name},
-		#{note},
+		#{type},
 		#{createdDate},
-		#{createdByUserId}
+		#{createdBy}
 		)
 	</insert>
 
 	<update id="update" parameterType="com.backend.domain.Category">
-		UPDATE Category
+		UPDATE category
 		SET
-		name =
-		#{name},
+		name =#{name},
 		state = #{state},
-		note = #{note},
-		createdDate = #{createdDate},
-		createdByUserId = #{createdByUserId},
+		type = #{type},
 		updatedDate = #{updatedDate},
-		updatedByUserId = #{updatedByUserId}
+		updatedBy = #{updatedBy}
 		WHERE id = #{id}
 	</update>
 
 	<delete id="remove" parameterType="long">
-		DELETE FROM Category
+		DELETE FROM category
 		WHERE id =
 		#{id}
 	</delete>
 
 	<select id="count" resultType="Integer">
 		SELECT COUNT(*)
-		FROM Category
+		FROM category
 	</select>
 
 	<select id="getAll" parameterType="map" resultMap='categoryResult'>
 		SELECT *
 		FROM
-		Category
+		category
 		WHERE state=1
 	</select>
 
 	<select id="getPageItems" parameterType="map" resultMap="categoryResult">
-		SELECT *FROM Category
+		SELECT *FROM category
 		LIMIT #{limit} OFFSET
 		<if test="offset != null">
 			${offset}
@@ -90,7 +88,7 @@
 	</select>
 
 	<select id="getPageItemsWithFields" parameterType="map" resultMap="categoryResult">
-		SELECT *FROM Category
+		SELECT *FROM category
 		<if test="_parameter != null">
 			<include refid="generic_where_clause_and" />
 		</if>
@@ -114,7 +112,7 @@
 	</select>
 
 	<select id="countWithFilters" resultType="Integer">
-		SELECT COUNT(*) FROM Category
+		SELECT COUNT(*) FROM category
 		<if test="_parameter != null">
 			<include refid="generic_where_clause_and" />
 		</if>

@@ -1,27 +1,39 @@
 package com.backend.web;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.dao.CategoryDao;
 import com.backend.domain.Category;
 import com.backend.json.ResponseList;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
+import com.fasterxml.jackson.module.jsonSchema.factories.SchemaFactoryWrapper;
 
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
-@RequestMapping("catagories")
+@RequestMapping("/api/categories")
 @Slf4j
 public class CategoryController {
 
@@ -37,7 +49,7 @@ public class CategoryController {
      */
     @RequestMapping(value = "v1/json", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity<Category> create(HttpServletRequest request, @RequestBody Category body) {
-        log.info("============= create ==========");
+        log.info("============= create with json ==========");
         dao.add(body);
         return new ResponseEntity<Category>(body, HttpStatus.OK);
     }
@@ -76,7 +88,7 @@ public class CategoryController {
      * @param body
      * @return
      */
-    @RequestMapping(value = "v1/{id}", method = RequestMethod.PUT, produces = "application/json")
+    @RequestMapping(value = "v1/{id}/json", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity<Category> update(HttpServletRequest request, @PathVariable Long id, @RequestBody Category body) {
         Category domain = dao.findById(id);
         if (domain == null) {
@@ -84,6 +96,7 @@ public class CategoryController {
         }
         domain.setName(body.getName());
         domain.setState(body.getState());
+        domain.setType(body.getType());
         // TODO : update properties
         dao.update(domain);
         return new ResponseEntity<Category>(domain, HttpStatus.OK);
@@ -117,4 +130,70 @@ public class CategoryController {
         return new ResponseEntity<>(dao.getAll(), HttpStatus.OK);
     }
 
+    /**
+     * 
+     * schema api : Content-Type: application/x-www-form-urlencoded 
+     * example json value
+     * 
+     *   {
+     *       primaryKeyName: "id",
+     *       tableName: "Country",
+     *       primaryKeyType: "long",
+     *       columns: {
+     *           comingSoon: "boolean",
+     *           flagImageUrl: "text",
+     *           isoCode: "text",
+     *           name: "text",
+     *           state: "long",
+     *           tcsUrl: "text",
+     *           createdDate: "datetime"
+     *        }
+     *   }
+     * 
+     * @param request
+     */
+    @RequestMapping(value = "v1/schema", method = { RequestMethod.GET }, produces = { MediaType.APPLICATION_JSON_VALUE })
+    @ApiOperation(value="get category schema", response = Map.class,
+            notes = "get category schema return as json key and value ex : {\" primaryKeyName: \"id\", tableName:country,...")
+    public ResponseEntity<Map<String, Object>> getschma(HttpServletRequest request) {
+        final Map<String, Object> body = new HashMap<String, Object>();
+        final Map<String,String> columns = new HashMap<>();
+        
+        columns.put("name", "text");
+        columns.put("type", "text");
+        
+        body.put("columns", columns);
+        body.put("tableName", "category");
+        body.put("primaryKeyName", "id");
+        body.put("primaryKeyType", "long");
+        
+        return new ResponseEntity<Map<String, Object>>(body, HttpStatus.OK);
+    }
+    
+    @GetMapping(value = "/v1", produces = { MediaType.APPLICATION_JSON_VALUE })
+    @ResponseBody
+    @ApiOperation(value="get categories by paging",nickname = "get categories by paging")
+    public ResponseList<Category> getPage(@RequestParam(value="pagesize", defaultValue="10") int pagesize,
+            @RequestParam(value = "cursorkey", required = false) String cursorkey) {
+        log.info("====get page {} , {} ====", pagesize, cursorkey);
+        return dao.getPage(pagesize, cursorkey);
+    }
+    
+    @RequestMapping(value = "schema", method = RequestMethod.GET)
+    public ResponseEntity<JsonSchema> schema(HttpServletRequest request, HttpServletResponse response)
+            throws JsonMappingException {
+        return new ResponseEntity<>(getSchema(Category.class), HttpStatus.OK);
+    }
+    /**
+     * 
+     * @param clazz
+     * @return
+     * @throws JsonMappingException
+     */
+    public static <D> JsonSchema getSchema (final Class<D> clazz) throws JsonMappingException {
+        ObjectMapper mapper = new ObjectMapper();
+        SchemaFactoryWrapper schemaFactoryWrapper = new SchemaFactoryWrapper();
+        mapper.acceptJsonFormatVisitor(clazz, schemaFactoryWrapper);
+        return schemaFactoryWrapper.finalSchema();
+    }
 }
