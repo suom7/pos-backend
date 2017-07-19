@@ -26,6 +26,7 @@ Spring Boot (Java 8)
 	$ ./gradlew bootRun
 
 ### deployment jar with profile on server
+
     $ java -jar -DSpring.profiles.active=TEST|STAGE|PROD  app.jar
     
      more customization 
@@ -45,12 +46,10 @@ Spring Boot (Java 8)
          -Dsun.net.inetaddr.ttl=180\
          -XX:+HeapDumpOnOutOfMemoryError\
          -jar\
-         /opt/pos-backend/active-version/app.jar\
+         app-1.0.2-SNAPSHOT.jar\
          --spring.profiles.active=TEST\
-         --server.port=8080\
+         --server.port=8080
 
-    
-    
 ### Create Flyway Patch
 
 	$ ./gradlew createFlywayPatch

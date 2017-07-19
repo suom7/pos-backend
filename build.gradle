@@ -19,12 +19,10 @@ plugins {
 apply plugin: 'java'
 apply plugin: 'eclipse-wtp'
 apply plugin: 'org.springframework.boot'
-apply plugin: 'war'
 apply plugin: 'docker'
 
-war {
-    baseName = 'backend-spring-boot-template'
-    version =  '0.1.0'
+jar {
+    baseName = 'app'
 }
 
 sourceCompatibility = 1.8
@@ -102,11 +100,11 @@ task createFlywayPatch() {
 task buildDocker(type: Docker, dependsOn: build) {
   push = false 
   maintainer 'Sovanndara Uom <uom.sovanndara@gmail.com>'
-  applicationName = war.baseName
+  applicationName = jar.baseName
   dockerfile = file('src/main/docker/Dockerfile')
   doFirst {
     copy {
-      from war
+      from jar
       into stageDir
     }
   }
