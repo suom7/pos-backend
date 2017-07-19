@@ -8,7 +8,12 @@ buildscript {
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
 		classpath('se.transmode.gradle:gradle-docker:1.2')
+		classpath 'net.researchgate:gradle-release:2.4.0'
 	}
+}
+
+plugins {
+  id 'net.researchgate.release' version '2.4.0'
 }
 
 apply plugin: 'java'
@@ -22,13 +27,45 @@ war {
     version =  '0.1.0'
 }
 
-version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 repositories {
 	mavenCentral()
 }
+
+release {
+    failOnCommitNeeded = false
+    failOnPublishNeeded = true
+    failOnSnapshotDependencies = true
+    failOnUnversionedFiles = false
+    failOnUpdateNeeded = true
+    revertOnFail = true
+    preCommitText = ''
+    preTagCommitMessage = '[Gradle Release Plugin] - pre tag commit: '
+    tagCommitMessage = '[Gradle Release Plugin] - creating tag: '
+    newVersionCommitMessage = '[Gradle Release Plugin] - new version commit: '
+    tagTemplate = '${version}'
+    versionPropertyFile = 'gradle.properties'
+    versionProperties = []
+    buildTasks = ['build']
+    
+    scmAdapters = [
+        net.researchgate.release.GitAdapter,
+        net.researchgate.release.SvnAdapter,
+        net.researchgate.release.HgAdapter,
+        net.researchgate.release.BzrAdapter
+    ]
+
+    git {
+        requireBranch = 'master'
+        pushToRemote = 'origin'
+        pushToBranchPrefix = ''
+        commitVersionFileOnly = false
+        //signTag = false
+    }
+}
+
 
 configurations {
 	providedRuntime
