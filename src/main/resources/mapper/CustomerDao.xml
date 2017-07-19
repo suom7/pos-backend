@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.backend.dao.CustomerDao">
+
+	<resultMap type='com.backend.domain.Customer' id='customerResult'>
+		<id property='id' column='id' />
+		<result property='firstName' column='firstName' />
+		<result property='lastName' column='lastName' />
+		<result property='emailAddress' column='emailAddress' />
+		<result property='telephone' column='telephone' />
+		<result property='state' column='state' />
+		<result property='version' column='version' />
+		<result property='createdDate' column='createdDate' />
+		<result property='createdBy' column='createdBy' />
+		<result property='updatedDate' column='updatedDate' />
+		<result property='updatedBy' column='updatedBy' />
+	</resultMap>
+
+	<select id="findById" resultType="com.backend.domain.Customer">
+		SELECT *FROM Customer
+		WHERE id=
+		#{id}
+	</select>
+
+	<select id="findByFields" parameterType="map" resultMap="customerResult">
+		SELECT *
+		FROM Customer
+		<if test="_parameter != null">
+			<include refid="generic_where_clause_and" />
+		</if>
+	</select>
+
+	<insert id="add" parameterType="com.backend.domain.Customer"
+		useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+		<![CDATA[
+		INSERT INTO
+		Customer (
+			firstName,
+			lastName,
+			emailAddress,
+			telephone,
+			state,
+			version,
+			createdBy,
+			createdDate
+		)
+		VALUES (
+			#{firstName},
+			#{lastName},
+			#{emailAddress},
+			#{telephone},
+			#{state},
+			#{version},
+			#{createdBy},
+			#{createdDate},
+		)
+		]]>
+	</insert>
+
+	<update id="update" parameterType="com.backend.domain.Customer">
+		<![CDATA[
+		UPDATE Customer
+		SET
+			firstName= #{firstName},
+			lastName= #{lastName},
+			emailAddress= #{emailAddress},
+			telephone= #{telephone},
+			state= #{state},
+			version= #{version},
+			createdDate = #{createdDate},
+			createdBy = #{createdBy},
+			updatedDate = #{updatedDate},
+			updatedBy = #{updatedBy}
+		WHERE id = #{id}
+		]]>
+	</update>
+
+	<delete id="remove" parameterType="long">
+		<![CDATA[
+		DELETE FROM Customer
+		WHERE id = #{id}
+		]]>
+	</delete>
+
+	<select id="count" resultType="Integer">
+		SELECT COUNT(*)
+		FROM Customer
+	</select>
+
+	<select id="getAll" parameterType="map" resultMap='customerResult'>
+		<![CDATA[
+			SELECT *
+			FROM
+			Customer
+		]]>
+	</select>
+
+	<select id="getPageItems" parameterType="map" resultMap="customerResult">
+		SELECT *FROM Customer
+		LIMIT #{limit} OFFSET
+		<if test="offset != null">
+			${offset}
+		</if>
+		<if test="offset == null">
+			0
+		</if>
+	</select>
+
+	<select id="getPageItemsWithFields" parameterType="map"
+		resultMap="customerResult">
+		SELECT *FROM Customer
+		<if test="_parameter != null">
+			<include refid="generic_where_clause_and" />
+		</if>
+		<if test="sortBy != null">
+			ORDER BY ${sortBy}
+			<if test="isAscending == true">
+				ASC
+			</if>
+			<if test="isAscending == false">
+				DESC
+			</if>
+		</if>
+
+		LIMIT #{limit} OFFSET
+		<if test="offset != null">
+			${offset}
+		</if>
+		<if test="offset == null">
+			0
+		</if>
+	</select>
+
+	<select id="countWithFilters" resultType="Integer">
+		SELECT COUNT(*) FROM Customer
+		<if test="_parameter != null">
+			<include refid="generic_where_clause_and" />
+		</if>
+	</select>
+
+	<sql id="generic_where_clause_and">
+		<where>
+			<trim prefixOverrides="AND ">
+				<if test="domain.state != null">
+					state=#{domain.state}
+				</if>
+			</trim>
+		</where>
+	</sql>
+</mapper>
