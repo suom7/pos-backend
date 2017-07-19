@@ -26,6 +26,10 @@ Spring Boot (Java 8)
 	$ ./gradlew bootRun
 
 ### deployment jar with profile on server
+    //local environment application.properties by default
+    $ ./gradlew clean build
+    $ java -jar build/libs/app.jar
+   
     //test environment  it takes application-TEST.properties
     $ java -jar -DSpring.profiles.active=TEST app.jar
     
