@@ -109,3 +109,17 @@ task buildDocker(type: Docker, dependsOn: build) {
     }
   }
 }
+
+task copyJarToCanonicalName(type: Copy) {
+    dependsOn build
+    from jar // shortcut for createJar.outputs.files
+    into 'build/libs/'
+    rename { String fileName -> "app.jar" }
+}
+
+build.doLast{
+    tasks.copyJarToCanonicalName.execute()
+}
+bootRun {
+    jvmArgs = ["-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"]
+}

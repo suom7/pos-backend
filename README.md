@@ -26,8 +26,12 @@ Spring Boot (Java 8)
 	$ ./gradlew bootRun
 
 ### deployment jar with profile on server
-
-    $ java -jar -DSpring.profiles.active=TEST|STAGE|PROD  app.jar
+    //test environment  it takes application-TEST.properties
+    $ java -jar -DSpring.profiles.active=TEST app.jar
+    
+     //prod environment  it takes application-PROD.properties
+    $ java -jar -DSpring.profiles.active=PROD app.jar
+    
     
      more customization 
     
