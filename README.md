@@ -59,6 +59,7 @@ Spring Boot (Java 8)
 
 	$ ./gradlew clean buildDocker
 
+
 ### Swagger - API document
 
 	UI : http://localhost:8080/swagger-ui.html
@@ -70,4 +71,9 @@ Spring Boot (Java 8)
 	Enable hot reloading, so every time we make a change in our 
 	files an application restart will be triggered automatically
 
+
+
+### Release tag 
+
+    $ ./gradlew release -Prelease.useAutomaticVersion=true 
 
