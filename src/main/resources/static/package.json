@@ -5,7 +5,9 @@
   "main": "index.js",
   "dependencies": {
     "bootstrap-material-design": "^0.5.10",
-    "jquery": "2.1.4"
+    "canvas": "^1.6.5",
+    "jquery": "2.1.4",
+    "jsbarcode": "^3.8.0"
   },
   "devDependencies": {},
   "scripts": {

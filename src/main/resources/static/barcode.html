@@ -8,6 +8,7 @@
      <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
      <script src="node_modules/bootstrap-material-design/dist/js/material.min.js"></script>
      <script src="node_modules/bootstrap-material-design/dist/js/ripples.min.js"></script>
+     <script src="node_modules/jsbarcode/dist/JsBarcode.all.min.js"></script>
      <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
      <link href="node_modules/bootstrap-material-design/dist/css/bootstrap-material-design.min.css" rel="stylesheet">
      <link href="node_modules/bootstrap-material-design/dist/css/ripples.min.css" rel="stylesheet">
@@ -17,7 +18,12 @@
                $.material.init();
           });
           $(function() {
-
+              JsBarcode("#code128", "Code-12345678FC", {
+                  format: "CODE128",
+                  width: 1,
+                  height: 100,
+                  displayValue: true
+              });
                $('#generateBarcode').on('click', function() {
                    submitRequest($("#barcodeId").val(), $("#barcodeImage") );
                });
@@ -47,12 +53,18 @@
                           console.log(data);
                           $.each(data, function( index, value ) {
                               $("#title").text(value.category);
+                              $(".wrapper").append('<div><p>'+ value.description +'</p> <svg class="barcode-image"  data-code="'+ value.barcodeId +'" id="barcode-'+ index +'"></svg></div>');
+                              //$("#title").text(value.category);
                               //$(".wrapper").append('<div><p>'+ value.description +'</p> <img class="barcode-image" src="data:image/jpeg;base64,'+ arrayBufferToBase64(data) +'"/></div>');
-                              $(".wrapper").append('<div><p>'+ value.description +'</p> <img class="barcode-image" data-code="'+ value.barcodeId +'"/></div>');
+                              //$(".wrapper").append('<div><p>'+ value.description +'</p> <img class="barcode-image" data-code="'+ value.barcodeId +'"/></div>');
                           });
                           $.each($(".barcode-image"), function (e) {
-                              console.log($(this).data("code"));
-                              submitRequest($(this).data("code"), $(this))
+                              JsBarcode("#"+ $(this).attr("id"), $(this).data("code"), {
+                                  format: "CODE128", //CODE128 (auto) is the default mode but you can still specify it
+                                  width: 2,
+                                  height: 100,
+                                  displayValue: true
+                              });
                           });
 
                           $(".wrapper").removeClass("hidden");
@@ -96,7 +108,7 @@
                margin-top: 30px;
           }
           p {
-               font-size:16px;
+               font-size: 18px;
                margin: 0 0 2px;
           }
           .wrapper {
@@ -163,6 +175,7 @@
           <div class = "row" >
                <div class = "col-sm-offset-4 col-sm-4">
                     <img id="barcodeImage"/>
+                    <svg id="code128"></svg>
                </div>
           </div>
      </div>

@@ -72,8 +72,16 @@ Spring Boot (Java 8)
 	files an application restart will be triggered automatically
 
 
-
 ### Release tag 
 
     $ ./gradlew release -Prelease.useAutomaticVersion=true 
+ 
+### Barcode generate (Using javascript library)
 
+	Repository : https://github.com/lindell/JsBarcode
+	
+You need to install libcairo2-dev, libjpeg-dev and libgif-dev packages to support canvas.
+
+	$ sudo apt-get install libcairo2-dev libjpeg-dev libgif-dev
+	$ npm install jsbarcode
+	$ npm install canvas
