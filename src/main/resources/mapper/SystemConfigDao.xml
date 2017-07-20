@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.backend.dao.SystemConfigDao">
+
+	<resultMap type='com.backend.domain.SystemConfig' id='systemConfigResult'>
+		<id property='id' column='id' />
+		<result property='companyName' column='companyName' />
+		<result property='companyAddress' column='companyAddress' />
+		<result property='companyTel' column='companyTel' />
+		<result property='companyEmail' column='companyEmail' />
+		<result property='companyLogo' column='companyLogo' />
+		<result property='companyCurrencyRate' column='companyCurrencyRate' />
+		<result property='companyRule' column='companyRule' />
+		<result property='companyOtherInfo' column='companyOtherInfo' />
+		
+		<result property='createdDate' column='createdDate' />
+		<result property='createdBy' column='createdBy' />
+		<result property='updatedDate' column='updatedDate' />
+		<result property='updatedBy' column='updatedBy' />
+	</resultMap>
+
+	<select id="findById" resultType="com.backend.domain.SystemConfig">
+		SELECT * 
+		FROM SystemConfig 
+		WHERE id = #{id}
+	</select>
+
+	<select id="findByFields" parameterType="map" resultMap="systemConfigResult">
+		SELECT *
+		FROM SystemConfig
+		<if test="_parameter != null">
+			<include refid="generic_where_clause_and" />
+		</if>
+	</select>
+
+	<insert id="add" parameterType="com.backend.domain.SystemConfig"
+		useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+		INSERT INTO
+		SystemConfig
+		(
+		companyName,
+		companyAddress,
+		companyTel,
+		companyEmail,
+		companyLogo,
+		companyCurrencyRate,
+		companyRule,
+		companyOtherInfo,
+		createdBy,
+		updatedBy
+		)
+		VALUES
+		(
+		#{companyName},
+		#{companyAddress},
+		#{companyTel},
+        #{companyEmail},
+        #{companyLogo},
+        #{companyCurrencyRate},
+        #{companyRule},
+        #{companyOtherInfo},
+        #{createdBy},
+        #{updatedBy}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.backend.domain.SystemConfig">
+		UPDATE SystemConfig
+		SET
+		companyName = #{companyName},
+		companyAddress = #{companyAddress},
+		companyTel = #{companyTel},
+		companyEmail = #{companyEmail},
+		companyLogo = #{companyLogo},
+		companyCurrencyRate = #{companyCurrencyRate},
+		companyRule = #{companyRule},
+		companyOtherInfo = #{companyOtherInfo},
+		createdBy = #{createdBy},
+		updatedBy = #{updatedBy}
+		WHERE id = #{id}
+	</update>
+
+	<delete id="remove" parameterType="long">
+		DELETE FROM SystemConfig
+		WHERE id = #{id}
+	</delete>
+
+	<select id="count" resultType="Integer">
+		SELECT COUNT(*)
+		FROM SystemConfig
+	</select>
+
+	<select id="getAll" parameterType="map" resultMap='systemConfigResult'>
+		SELECT *
+		FROM
+		SystemConfig
+	</select>
+
+	<select id="getPageItems" parameterType="map" resultMap="systemConfigResult">
+		SELECT * FROM SystemConfig
+		LIMIT #{limit} OFFSET
+		<if test="offset != null">
+			${offset}
+		</if>
+		<if test="offset == null">
+			0
+		</if>
+	</select>
+
+	<select id="getPageItemsWithFields" parameterType="map" resultMap="systemConfigResult">
+		SELECT * FROM SystemConfig
+		<if test="_parameter != null">
+			<include refid="generic_where_clause_and" />
+		</if>
+		<if test="sortBy != null">
+			ORDER BY ${sortBy}
+			<if test="isAscending == true">
+				ASC
+			</if>
+			<if test="isAscending == false">
+				DESC
+			</if>
+		</if>
+
+		LIMIT #{limit} OFFSET
+		<if test="offset != null">
+			${offset}
+		</if>
+		<if test="offset == null">
+			0
+		</if>
+	</select>
+
+	<select id="countWithFilters" resultType="Integer">
+		SELECT COUNT(*) FROM SystemConfig
+		<if test="_parameter != null">
+			<include refid="generic_where_clause_and" />
+		</if>
+	</select>
+
+	<sql id="generic_where_clause_and">
+		<where>
+			<trim prefixOverrides="AND ">
+				<if test="domain.companyEmail != null">
+                    state=#{domain.companyEmail}
+                </if>
+				<if test="domain.companyName != null">
+					state=#{domain.companyName}
+				</if>
+			</trim>
+		</where>
+	</sql>
+</mapper>
