@@ -11,9 +11,9 @@ CREATE TABLE IF NOT EXISTS `product` (
   `currency` bigint(11) NOT NULL,
   `state` bigint(11) DEFAULT NULL,
   `version` bigint(11) DEFAULT NULL,
-  `createdDate` timestamp NOT NULL DEFAULT  '0000-00-00 00:00:00',
+  `createdDate` timestamp NOT NULL DEFAULT  CURRENT_TIMESTAMP,
   `createdBy` varchar(100) NULL,
-  `updatedDate` timestamp NOT NULL DEFAULT  '0000-00-00 00:00:00',
+  `updatedDate` timestamp NOT NULL DEFAULT  CURRENT_TIMESTAMP,
   `updatedBy` varchar(100) NULL,
   CONSTRAINT constraint_code UNIQUE (code),
   PRIMARY KEY (`id`)
@@ -26,9 +26,9 @@ CREATE TABLE IF NOT EXISTS `category` (
   `type` varchar(255) DEFAULT NULL,
   `state` bigint(11) DEFAULT NULL,
   `version` bigint(11) DEFAULT NULL,
-  `createdDate` timestamp NOT NULL DEFAULT  '0000-00-00 00:00:00',
+  `createdDate` timestamp NOT NULL DEFAULT  CURRENT_TIMESTAMP,
   `createdBy` varchar(100) NULL,
-  `updatedDate` timestamp NOT NULL DEFAULT  '0000-00-00 00:00:00',
+  `updatedDate` timestamp NOT NULL DEFAULT  CURRENT_TIMESTAMP,
   `updatedBy` varchar(100) NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

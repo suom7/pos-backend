@@ -8,8 +8,6 @@ buildscript {
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
 		classpath('se.transmode.gradle:gradle-docker:1.2')
-		classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
-        classpath 'com.bmuschko:gradle-docker-plugin:3.0.8'
 		classpath 'net.researchgate:gradle-release:2.4.0'
 	}
 }
@@ -24,10 +22,9 @@ apply plugin: 'org.springframework.boot'
 //apply plugin: com.bmuschko.gradle.nexus.NexusPlugin
 //apply plugin: 'com.bmuschko.docker-remote-api'
 apply plugin: 'docker'
+apply plugin: 'application'
 
-jar {
-    baseName = 'app'
-}
+
 
 
 sourceCompatibility = 1.8
@@ -110,6 +107,7 @@ task createFlywayPatch() {
         ant.touch(file: f)
     }
 }
+//copy and rename app.jar for docker
 task copyJarToCanonicalName(type: Copy) {
     dependsOn build
     from jar // shortcut for createJar.outputs.files
@@ -119,14 +117,32 @@ task copyJarToCanonicalName(type: Copy) {
 group = 'sopheamak'
 def registryUrl = 'https://hub.docker.com/'
 def dockerImageName = 'springboot-mysql-backend'
+def tagVersion = 'latest'
 
+docker {
+    maintainer = 'Sophea MAK <sopheamak@gmail.com>'
+}
 
-// Build Docker Image gradlew buildDocker -pPush (push to repo)
+// Build Docker Image gradlew buildDocker -Ppush (push to repo) 
+// push to latest version -Platest
 task buildDocker(type: Docker, dependsOn: build) {
+  //check properties latest existed
+  if (project.hasProperty('latest')) {
+      setTagVersionToLatest()
+  }
+  
   push = project.hasProperty('push')
   applicationName = dockerImageName
+  tagVersion = 'test'
   dockerfile = file('src/main/docker/Dockerfile')
+  //tag = "${project.group}/${applicationName}:${tagVersion}"
   doFirst {
+   
+    copy {
+       from "src/main/docker"
+       into "build/docker"
+    }
+    
     copy {
        from jar // shortcut for createJar.outputs.files
        into "build/docker/target"

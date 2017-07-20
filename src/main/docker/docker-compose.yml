@@ -1,0 +1,25 @@
+version: '2.1'
+
+services:
+  mysql:
+        image: mysql:5.7
+        environment:
+           - MYSQL_ROOT_PASSWORD=root
+           - MYSQL_DATABASE=pos
+           - MYSQL_USER=pos
+           - MYSQL_PASSWORD=DrQi3kclsqO4v
+        ports:
+            - 3306:3306
+            
+  tomcatwar:
+     image: sopheamak/springboot-mysql-backend
+     links:
+      - mysql:mysql
+     ports:
+         - 8080:8080
+     environment:
+            - DATABASE_HOST=mysql
+            - DATABASE_USER=pos
+            - DATABASE_PASSWORD=DrQi3kclsqO4v
+            - DATABASE_NAME=pos
+            - DATABASE_PORT=3306

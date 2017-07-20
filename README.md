@@ -66,6 +66,21 @@ Spring Boot (Java 8)
 
 	$ ./gradlew clean buildDocker
 
+### Run MySQL 5.7 in Docker container:
+
+    docker run --name mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=pos -e DATABASE_USER=pos -e DATABASE_PASSWORD=DrQi3kclsqO4v -p  3306:3306 -d mysql:5.7
+    
+## Run demo application in Docker container and link to mysql:
+
+    $ docker run -p 8080:8080 --name web-app --link mysql:mysql -d sopheamak/springboot-mysql-backend
+
+    $ docker run -p 8080:8080 --name web-app -d sopheamak/springboot_docker_mysql
+
+## Run docker-composer:
+   
+   $ cd build/docker
+   
+   $ docker-compose up    
 
 ### Swagger - API document
 
