@@ -1,12 +1,14 @@
 package com.backend.web;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,11 +25,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.dao.CategoryDao;
 import com.backend.domain.Category;
+import com.backend.domain.Data;
+import com.backend.domain.Field;
 import com.backend.json.ResponseList;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
-import com.fasterxml.jackson.module.jsonSchema.factories.SchemaFactoryWrapper;
 
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -157,11 +157,19 @@ public class CategoryController {
             notes = "get category schema return as json key and value ex : {\" primaryKeyName: \"id\", tableName:country,...")
     public ResponseEntity<Map<String, Object>> getschma(HttpServletRequest request) {
         final Map<String, Object> body = new HashMap<String, Object>();
-        final Map<String,String> columns = new HashMap<>();
+
         
+        final List<Field> columns = new ArrayList<>();
+        columns.add(new Field("name", "text"));
+        columns.add(new Field("type", "text"));
+        
+        // test
+        columns.add(new Field("gender", "select", Arrays.asList(new Data("1", "Female"), new Data("2", "Male"))));
+        /*
+        final Map<String, String> columns = new HashMap<>();
         columns.put("name", "text");
         columns.put("type", "text");
-        
+        */
         body.put("columns", columns);
         body.put("tableName", "category");
         body.put("primaryKeyName", "id");
@@ -177,23 +185,5 @@ public class CategoryController {
             @RequestParam(value = "cursorkey", required = false) String cursorkey) {
         log.info("====get page {} , {} ====", pagesize, cursorkey);
         return dao.getPage(pagesize, cursorkey);
-    }
-    
-    @RequestMapping(value = "schema", method = RequestMethod.GET)
-    public ResponseEntity<JsonSchema> schema(HttpServletRequest request, HttpServletResponse response)
-            throws JsonMappingException {
-        return new ResponseEntity<>(getSchema(Category.class), HttpStatus.OK);
-    }
-    /**
-     * 
-     * @param clazz
-     * @return
-     * @throws JsonMappingException
-     */
-    public static <D> JsonSchema getSchema (final Class<D> clazz) throws JsonMappingException {
-        ObjectMapper mapper = new ObjectMapper();
-        SchemaFactoryWrapper schemaFactoryWrapper = new SchemaFactoryWrapper();
-        mapper.acceptJsonFormatVisitor(clazz, schemaFactoryWrapper);
-        return schemaFactoryWrapper.finalSchema();
     }
 }

@@ -132,8 +132,13 @@ function crudLoadSchema() {
             "' readonly='readonly' class='form-control' />" +
             "</div></div>");
 
-        $.map(data.columns, function(item, key) {
-        	if (!crudIsAuditField(key)) {
+        
+        $.each(data.columns, function (index, field) {
+        	
+        	var key = field.name;
+        	var item = field.type;
+        	
+            if (!crudIsAuditField(key)) {
                 $("#tableHead").append("<th>" + key + "</th>");
             }
 
@@ -163,6 +168,14 @@ function crudLoadSchema() {
                     		"<button class='btn btn-default btnRemoveItem'><span class='glyphicon glyphicon-minus'></span></button></div>" +
                     		"<div class='col-xs-1'><button class='btn btn-default btnAddCollection' prefix='create_' value='" + key + "'><span class='glyphicon glyphicon-plus'></span></button></div></div><br/>");
             	}
+            	else if(item == "select") {
+            		var option = "<option value=''>please select</option>";
+            		$.each(field.data, function (index, opt) {
+            			option = option + "<option value='"+ opt.id +"'>"+ opt.label +"</option>" ;
+            		});
+            		var select = "<select class='form-control' id='create_" + key + "' name='" + key + "'>" + option +"</select>";
+            		$("#createFieldset").append("<label for='create_" + key + "'>" + key + "</label><br/>" + select);
+            	}
             	else{
             		$("#createFieldset").append("<label for='create_" + key + "'>" + key + "</label>" +
                             ('text' == item ? 
@@ -179,6 +192,7 @@ function crudLoadSchema() {
 	            	"<label class='control-label' for='update_" + key + "'>" + key + "</label><br/>" +
 	            	"<select class='form-control' id='update_" + key + "' name='" + key + "'><option value=''>please select</option><option value='true'>True</option><option value='false'>False</option></select><br/>");
 	        	}
+	            
 	            else if (item == "long") {
             		$("#updateFieldset").append("<label for='update_" + key + "'>" + key + "</label><br/>" +
                     		"<input type='text' id='update_" + key + "' name='" + key + "' class='longOnly form-control'/><br/>");
@@ -197,6 +211,15 @@ function crudLoadSchema() {
 	            	$("#updateFieldset").append("<label for='update_" + key + "'>" + key + "</label><br/>" +
 	            			"<div class='row update_collectionBox_" + key + "' id='update_" + key + "' name='" + key + "'></div>");
 	            }
+
+            	else if(item == "select") {
+            		var option = "<option value=''>please select</option>";
+            		$.each(field.data, function (index, opt) {
+            			option = option + "<option value='"+ opt.id +"'>"+ opt.label +"</option>" ;
+            		});
+            		var select = "<select class='form-control' id='update_" + key + "' name='" + key + "'>" + option +"</select>";
+            		$("#updateFieldset").append("<label for='update_" + key + "'>" + key + "</label><br/>" + select);
+            	}
 	            else {
 	            	$("#updateFieldset").append("<div class='control-group'>" +
 	            	"<label class='control-label' for='update_" + key + "'>" + key + "</label>" +
@@ -207,11 +230,8 @@ function crudLoadSchema() {
 		            "</div></div>");
 	            }
             }
-
-            if (crudIsAuditField(key)) {
-//                $("#update_" + key).attr("readonly", "readonly");
-            }
         });
+        
     })
 }
 
@@ -259,7 +279,11 @@ function crudAddEntity(item, index, schema) {
     var value;
     //var title = "";
     //var first = true;
-    $.map(schema.columns, function(clazz, key) {
+    
+    $.each(schema.columns, function(index, field) {
+    	var key = field.name;
+    	var clazz = field.type;
+    	
         value = item[key];
         if(value==null) {
         	value = "";
@@ -275,7 +299,6 @@ function crudAddEntity(item, index, schema) {
         	$("#all_" + primaryKey).append("<td id='" + primaryKey + "X" + key + "'>" + value + "</td>");
         }
     });
-    //$("#all_" + primaryKey).attr('title', title);
 }
 
 // populate update data to form
@@ -288,7 +311,12 @@ function crudPopulateUpdate(primaryKey) {
     var schema = $("#create-entity").data("schema");
     var value = primaryKey;
     $("#update_" + schema.primaryKeyName).val(value);
-    $.map(schema.columns, function(clazz, key) {
+    
+    $.each(schema.columns, function(index, field) {
+    	
+    	var clazz = field.type;
+    	var key = field.key;
+    	
     	var first = true;
     	if (crudIsAuditField(key)) {
             value = $("#" + primaryKey + "X" + key).val();
@@ -320,7 +348,6 @@ function crudPopulateUpdate(primaryKey) {
             $("#update_" + key).val(value);
         }
     });
-
 }
 
 // format date time to [MM/DD/YYYY, H:mm:ss P]
@@ -361,8 +388,13 @@ function crudUpsertEntity(idPrefix) {
         }
     }
 
+    
     // map properties
-    $.map(schema.columns, function(item, key) {
+    $.each(schema.columns, function(index, field) {
+    	
+    	var key = field.name;
+    	var item = field.type;
+    	
         if ("#create_" == idPrefix && crudIsAuditField(key)) {
             // do not map to body when creating
         }
@@ -401,7 +433,10 @@ function crudUpsertCollection(idPrefix, key) {
 function crudPopulateReadData(data){
 	var schema = $("#create-entity").data("schema");
     $("#update_" + schema.primaryKeyName).val(data[schema.primaryKeyName]);
-    $.map(schema.columns, function(clazz, key) {
+    $.each(schema.columns, function(index, field) {
+    	var key = field.name;
+    	var clazz = field.type;
+    	
         if (!crudIsAuditField(key)) {
         	if ("text" == clazz) {
                 $("#update_" + key).text(data[key]);
