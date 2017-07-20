@@ -65,6 +65,12 @@ Spring Boot (Java 8)
 ### Build Docker
 
 	$ ./gradlew clean buildDocker
+	
+	// build latest version
+	$ ./gradlew buildDocker -Platest
+	
+	// build docker and push to repo
+	$ ./gradlew buildDocker -Ppush -Platest
 
 ### Run MySQL 5.7 in Docker container:
 
