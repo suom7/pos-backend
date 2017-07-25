@@ -1,4 +1,4 @@
-var apiUrl = "/api/categories/";
+
 var cursor = "";
 var pageSize = 10;
 var isChange = false;
@@ -141,9 +141,9 @@ function crudLoadSchema() {
             if (!crudIsAuditField(key)) {
                 $("#tableHead").append("<th>" + key + "</th>");
             }
-
+            
             // generate Create form
-            if (!crudIsAuditField(key)) {
+            if (!crudIsAuditField(key) && !(key == 'createdDate' || key == 'updatedDate')) {
             	if(item == "boolean") {
             		$("#createFieldset").append("<label for='create_" + key + "'>" + key + "</label><br/>" +
             		"<select class='form-control' id='create_" + key + "' name='" + key + "'><option value=''>please select</option><option value='true'>True</option><option value='false'>False</option></select><br/>");
@@ -303,19 +303,23 @@ function crudAddEntity(item, index, schema) {
 
 // populate update data to form
 function crudPopulateUpdate(primaryKey) {
+	
+	 var schema = $("#create-entity").data("schema");
+	 var value = primaryKey;
+	    
 	$('#tab-update').addClass('active');
 	$('#tab-home').removeClass('active');
 	hideNoResultAlert();
 	
 	
-    var schema = $("#create-entity").data("schema");
-    var value = primaryKey;
+   
     $("#update_" + schema.primaryKeyName).val(value);
+    console.log(schema.columns);
     
     $.each(schema.columns, function(index, field) {
     	
     	var clazz = field.type;
-    	var key = field.key;
+    	var key = field.name;
     	
     	var first = true;
     	if (crudIsAuditField(key)) {
@@ -346,6 +350,11 @@ function crudPopulateUpdate(primaryKey) {
         }
         else {
             $("#update_" + key).val(value);
+        }
+        
+        //createdDate or updatedDate set readonly
+        if (key == 'createdDate' || key == 'updatedDate') {
+        	 $("#update_" + key).attr('readonly', true);
         }
     });
 }
@@ -447,6 +456,11 @@ function crudPopulateReadData(data){
             else {
                 $("#update_" + key).val(data[key]);
             }
+        	
+        }
+      //createdDate or updatedDate set readonly
+        if (key == 'createdDate' || key == 'updatedDate') {
+        	 $("#update_" + key).attr('readonly', true);
         }
     });
 }
@@ -454,6 +468,8 @@ function crudPopulateReadData(data){
 // invoke create API
 function crudCreateEntity() {
     var body = crudUpsertEntity("#create_");
+    delete body.updatedDate
+    delete body.createdDate
     
     crudCreate(body, function(data, statusText, jqXHR) {
     	$('#successText').html("Data create successfully.")
@@ -513,6 +529,9 @@ function crudCreate(body, successFunction) {
  * Content-Type: application/json
  * */
 function crudUpdate(id, body, successFunction) {
+	 delete body.updatedDate
+	 delete body.createdDate
+	    
 	$.ajax({
 		url: apiUrl + "v1/"+id+"/json",
 		type: 'POST',

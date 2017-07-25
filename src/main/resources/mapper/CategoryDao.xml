@@ -73,7 +73,7 @@
 		SELECT *
 		FROM
 		category
-		WHERE state=1
+		
 	</select>
 
 	<select id="getPageItems" parameterType="map" resultMap="categoryResult">

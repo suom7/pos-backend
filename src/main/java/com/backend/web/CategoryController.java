@@ -1,7 +1,6 @@
 package com.backend.web;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.dao.CategoryDao;
 import com.backend.domain.Category;
-import com.backend.domain.Data;
 import com.backend.domain.Field;
 import com.backend.json.ResponseList;
 
@@ -146,6 +144,7 @@ public class CategoryController {
      *           name: "text",
      *           state: "long",
      *           tcsUrl: "text",
+     *           price : "number",
      *           createdDate: "datetime"
      *        }
      *   }
@@ -162,9 +161,10 @@ public class CategoryController {
         final List<Field> columns = new ArrayList<>();
         columns.add(new Field("name", "text"));
         columns.add(new Field("type", "text"));
-        
+        columns.add(new Field("createdDate", "datetime"));
+        columns.add(new Field("updatedDate", "datetime"));
         // test
-        columns.add(new Field("gender", "select", Arrays.asList(new Data("1", "Female"), new Data("2", "Male"))));
+       // columns.add(new Field("gender", "select", Arrays.asList(new Data("1", "Female"), new Data("2", "Male"))));
         /*
         final Map<String, String> columns = new HashMap<>();
         columns.put("name", "text");

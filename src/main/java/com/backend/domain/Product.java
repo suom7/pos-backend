@@ -1,7 +1,6 @@
 package com.backend.domain;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -15,11 +14,13 @@ public class Product extends AbstractLongDomainEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     private Long id;
     private Long categoryId;
-    private String categoryName;
-    private String image;
     private String name;
-    private String note;
-    private Long createdByUserId;
-    private Date createdDate;
-    private Long updatedByUserId;
+    private String code;
+    private Integer qty;
+    private String description;
+    private Double price1;
+    private Double price2;
+    private Integer currentType;
+    private String image;
+    
 }

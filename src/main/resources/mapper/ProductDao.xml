@@ -7,19 +7,20 @@
 	<resultMap type='com.backend.domain.Product' id='productResult'>
 		<id property='id' column='id' />
 		<result property='name' column='name' />
+		<result property='description' column='description' />
 		<result property='categoryId' column='categoryId' />
-		<result property='categoryName' column='categoryName' />
+		<result property='code' column='code' />
+		<result property='qty' column='qty' />
 		<result property='image' column='image' />
-		<result property='note' column='note' />
+		<result property='price1' column='price1' />
+		<result property='price2' column='price2' />
 		<result property='state' column='state' />
 		<result property='createdDate' column='createdDate' />
-		<result property='createdByUserId' column='createdByUserId' />
 		<result property='updatedDate' column='updatedDate' />
-		<result property='updatedByUserId' column='updatedByUserId' />
 	</resultMap>
 
 	<select id="findById" resultType="com.backend.domain.Product">
-		SELECT *FROM Product WHERE id
+		SELECT * FROM product WHERE id
 		= #{id}
 	</select>
 
@@ -34,46 +35,53 @@
 	<insert id="add" parameterType="com.backend.domain.Product"
 		useGeneratedKeys="true" keyProperty="id" keyColumn="id">
 		INSERT INTO
-		Product
+		product
 		(
-			name,
 			categoryId,
-			categoryName,
+			name,
+			code,
+			description,
+			price1,
+			price2,
+			qty,
 			image,
-			note,
 			createdDate,
-			createdByUserId
+			createdBy
 		)
 		VALUES
 		(
-			#{name},
 			#{categoryId},
-			#{categoryName},
+			#{name},
+			#{code},
+			#{description},
+			#{price1},
+			#{price2},
+			#{qty},
 			#{image},
-			#{note},
 			#{createdDate},
-			#{createdByUserId}
+			#{createdBy}
 		)
 	</insert>
 
 	<update id="update" parameterType="com.backend.domain.Product">
-		UPDATE Product
+		UPDATE product
 		SET
 			name = #{name},
 			categoryId = #{categoryId},
-			categoryName = #{categoryName},
+			description = #{description},
 			image = #{image},
-			note = #{note},
+			code = #{code},
+			price1 = #{price1},
+			price2 = #{price2},
+			qty = #{qty},
 			state= #{state},
-			createdDate = #{createdDate},
-			createdByUserId = #{createdByUserId},
 			updatedDate = #{updatedDate},
-			updatedByUserId = #{updatedByUserId}
+			updatedBy = #{updatedBy}
 		WHERE id = #{id}
 	</update>
 
 	<delete id="remove" parameterType="long">
-		DELETE FROM Product
+		DELETE FROM product
 		WHERE id =
 		#{id}
 	</delete>
@@ -126,7 +134,7 @@
 	</select>
 
 	<select id="countWithFilters" resultType="Integer">
-		SELECT COUNT(*) FROM Product
+		SELECT COUNT(*) FROM product
 		<if test="_parameter != null">
 			<include refid="generic_where_clause_and" />
 		</if>
