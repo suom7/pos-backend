@@ -268,6 +268,16 @@ function crudLoadMore() {
     });
 }
 
+function populateSelectValue(value, list) {
+	$.each(list, function (index, opt) {
+		if (value == opt.id) {
+			value = opt.label;
+			return;
+			
+		}
+	});
+	return value;
+}
 // add all data to table row
 function crudAddEntity(item, index, schema) {
     var primaryKey = item[schema.primaryKeyName];
@@ -290,11 +300,14 @@ function crudAddEntity(item, index, schema) {
         }
         if ("datetime" == clazz) {
             value = crudFormatMillis(value);
+        } else if("select" == clazz) {
+        	value = populateSelectValue (value, field.data)
         }
         if (crudIsAuditField(key)) {
             //title = title + key + " " + value + ", ";
             $("#all_" + primaryKey).append("<input type='hidden' id='" + primaryKey + "X" + key + "' value='" + value + "' />");
         }
+        
         else {
         	$("#all_" + primaryKey).append("<td id='" + primaryKey + "X" + key + "'>" + value + "</td>");
         }
