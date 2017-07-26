@@ -293,7 +293,7 @@ function crudAddEntity(item, index, schema) {
     $.each(schema.columns, function(index, field) {
     	var key = field.name;
     	var clazz = field.type;
-    	
+    	var labelValue = null;
         value = item[key];
         if(value==null) {
         	value = "";
@@ -301,15 +301,19 @@ function crudAddEntity(item, index, schema) {
         if ("datetime" == clazz) {
             value = crudFormatMillis(value);
         } else if("select" == clazz) {
-        	value = populateSelectValue (value, field.data)
+        	labelValue = populateSelectValue (value, field.data)
         }
         if (crudIsAuditField(key)) {
             //title = title + key + " " + value + ", ";
             $("#all_" + primaryKey).append("<input type='hidden' id='" + primaryKey + "X" + key + "' value='" + value + "' />");
         }
-        
         else {
-        	$("#all_" + primaryKey).append("<td id='" + primaryKey + "X" + key + "'>" + value + "</td>");
+        	if (labelValue != null) {
+        		$("#all_" + primaryKey).append("<td id='" + primaryKey + "Xlabel" + key + "'>" + labelValue + "</td>");
+        		$("#all_" + primaryKey).append("<input type='hidden' id='" + primaryKey + "X" + key + "' value='" + value + "' />");
+        	} else {
+        		$("#all_" + primaryKey).append("<td id='" + primaryKey + "X" + key + "'>" + value + "</td>");
+        	}
         }
     });
 }
@@ -335,7 +339,7 @@ function crudPopulateUpdate(primaryKey) {
     	var key = field.name;
     	
     	var first = true;
-    	if (crudIsAuditField(key)) {
+    	if (crudIsAuditField(key) || clazz == 'select') {
             value = $("#" + primaryKey + "X" + key).val();
         }
         else {

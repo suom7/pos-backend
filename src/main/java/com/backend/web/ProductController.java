@@ -195,7 +195,7 @@ public class ProductController {
         columns.put("type", "text");
         */
         body.put("columns", columns);
-        body.put("tableName", "category");
+        body.put("tableName", "product");
         body.put("primaryKeyName", "id");
         body.put("primaryKeyType", "long");
         
