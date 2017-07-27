@@ -25,18 +25,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.dao.CategoryDao;
 import com.backend.dao.ProductDao;
-import com.backend.domain.Category;
 import com.backend.domain.Data;
 import com.backend.domain.Field;
 import com.backend.domain.Product;
 import com.backend.json.ResponseList;
+import com.sma.security.annotation.Authorization;
+import com.sma.security.interceptor.UserRole;
 
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
-@RequestMapping("api/products")
+@RequestMapping("/products")
 @Slf4j
+@Authorization(userRoles = {UserRole.ROLE_ANONYMOUS})
 public class ProductController {
 
     @Resource(name = "productDaoImpl")

@@ -1,0 +1,467 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Credential Owner (Ugly Form)</title>
+
+<link type="text/css" href="/css/blitzer/jquery-ui-1.8.17.custom.css"
+    rel="stylesheet" />
+</head>
+<body>
+    <div>
+        Create Ugly form for the following REST-APIs :
+        http://archive.goldengekko.com/archive/user-security-mgmt/1.0.2/ <br>
+        <span style="color:red">Credential Owner</span>
+
+        <ul>
+            <li>signupNewUser()</li>
+            <li>authenticateUserClientCredentialsType()</li>
+            <li>getMe()</li>
+            <li>resetPassword()</li>
+            <li>updateUserPassword()</li>
+        </ul>
+        
+         
+        <h3>Signup a new user with "active" state</h3>
+        <table class="ui-widget ui-widget-content">
+            <thead class="ui-widget-header">
+                <tr>
+                    <th>POST</th>
+                    <th>/api/oauth2/v1/user</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span>Login Name</span></td>
+                    <td><input type="text" id="loginNameSignupUser" /></td>
+                </tr>
+                <tr>
+                    <td><span>Login Password</span></td>
+                    <td><input type="text" id="loginPasswordSignupUser" /></td>
+                </tr>
+                
+                <tr>
+                    <td></td>
+                    <td><button id="signupUserButton">Submit</button></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td><label for="signupUserResponseCode">Response Code</label></td>
+                    <td><pre id="signupUserResponseCode"></pre></td>
+                </tr>
+                <tr>
+                    <td><label for="signupUserResponse">Response</label></td>
+                    <td><pre id="signupUserResponse"></pre></td>
+                </tr>
+            </tfoot>
+        </table>
+        
+        <h3>Signup a new user with "pending" state</h3>
+        <table class="ui-widget ui-widget-content">
+            <thead class="ui-widget-header">
+                <tr>
+                    <th>POST</th>
+                    <th>/api/oauth2/v1/user</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span>Login Name</span></td>
+                    <td><input type="text" id="userNamePending" /></td>
+                </tr>
+                <tr>
+                    <td><span>Login Password</span></td>
+                    <td><input type="text" id="userPasswordPending" /></td>
+                </tr>
+                <tr>
+                    <td><span>state</span></td>
+                    <td><input type="text" id="statePending" value="0"/></td>
+                </tr>
+                <tr>
+                    <td><span>appType ( 1 - iOS, 2- Android , 3 -web)</span></td>
+                    <td><input type="text" id="appTypePending" value="3"/></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><button id="signupUserPendingButton">Submit</button></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td><label for="signupUserPendingResponseCode">Response Code</label></td>
+                    <td><pre id="signupUserPendingResponseCode"></pre></td>
+                </tr>
+                <tr>
+                    <td><label for="signupUserPendingResponse">Response</label></td>
+                    <td><pre id="signupUserPendingResponse"></pre></td>
+                </tr>
+            </tfoot>
+        </table>
+        <h3>Activate Account token </h3>
+        <table class="ui-widget ui-widget-content">
+            <thead class="ui-widget-header">
+                <tr>
+                    <th>POST</th>
+                    <th>/api/oauth2/v1/user/activateAccountToken</th>
+                </tr>
+                </thead>
+                <tr>
+                    <td>activateAccountToken </td>
+                    <td> <input type="text"    id="activateAccountToken" /></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><button id="activateAccountTokenButton">Submit</button></td>
+                </tr>
+                <tr>
+                    <td><label for="activateAccountTokenResponseCode">Response   Code</label></td>
+                    <td><pre id="activateAccountTokenResponseCode"></pre></td>
+                </tr>
+                <tr>
+                    <td><label for="activateAccountTokenResponse">Response</label></td>
+                    <td><pre id="activateAccountTokenResponse"></pre></td>
+                </tr>
+                
+        </table>
+        
+        <h3>LogIn Authorization /verify login with resource owner
+            password</h3>
+        <table class="ui-widget ui-widget-content">
+            <thead class="ui-widget-header">
+                <tr>
+                    <th>POST</th>
+                    <th>/api/oauth2/token</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span>Login Name</span></td>
+                    <td><input type="text" id="loginNameVerifyLogin" /></td>
+                </tr>
+                <tr>
+                    <td><span>Password</span></td>
+                    <td><input type="text" id="passwordVerifyLogin" /></td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td><button id="verifyLoginButton">Submit</button></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td><label for="verifyLoginResponseCode">Response Code</label></td>
+                    <td><pre id="verifyLoginResponseCode"></pre></td>
+                </tr>
+                <tr>
+                    <td><label for="verifyLoginResponse">Response</label></td>
+                    <td><pre id="verifyLoginResponse"></pre></td>
+                </tr>
+            </tfoot>
+        </table>
+        
+        
+        <h3>Get Me</h3>
+        <table class="ui-widget ui-widget-content">
+            <thead class="ui-widget-header">
+                <tr>
+                    <th>POST</th>
+                    <th>/api/oauth2/v1/user/me</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td><button id="verifyUserMeButton">Submit</button></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td><label for="verifyUserMeButtonResponseCode">Response
+                            Code</label></td>
+                    <td><pre id="verifyUserMeButtonResponseCode"></pre></td>                                
+                </tr>
+                <tr>
+                    <td><label for="verifyUserMeButtonResponse">Response</label></td>
+                    <td><pre id="verifyUserMeButtonResponse"></pre></td>
+                </tr>
+            </tfoot>
+        </table>
+        
+        <h3>reset password / reset password confirmation</h3>
+        <table class="ui-widget ui-widget-content">
+            <thead class="ui-widget-header">
+                <tr>
+                    <th>POST</th>
+                    <th>/api/oauth2/v1/user/resetpassword</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span>Email</span></td>
+                    <td><input type="text" id="emailResetPassword" /></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><button id="resetPasswordButton">Submit</button></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                 <tr>
+                    <th>POST</th>
+                    <th>/api/oauth2/v1/user/resetpasswordconfirm</th>
+                </tr>
+                <tr>
+                    <td>resetPasswordToken </td>
+                    <td> <input type="text"    id="resetPasswordToken" /></td>
+                </tr>
+                <tr>
+                    <td>resetNewPassword </td>
+                    <td> <input type="text"    id="resetNewPassword" /></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><button id="confirmPasswordButton">Confirm</button></td>
+                </tr>
+                <tr>
+                    <td><label for="resetPasswordResponseCode">Response
+                            Code</label></td>
+                    <td><pre id="resetPasswordResponseCode"></pre></td>
+                </tr>
+                <tr>
+                    <td><label for="resetPasswordResponse">Response</label></td>
+                    <td><pre id="resetPasswordResponse"></pre></td>
+                </tr>
+            </tfoot>
+        </table>
+        
+        
+        
+        
+        <h3>update password</h3>
+        <table class="ui-widget ui-widget-content">
+            <thead class="ui-widget-header">
+                <tr>
+                    <th>POST</th>
+                    <th>/api/oauth2/v1/user/password</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span>Old Password</span></td>
+                    <td><input type="text" id="oldPasswordUpdatePassword" /></td>
+                </tr>
+                <tr>
+                    <td><span>New Password</span></td>
+                    <td><input type="text" id="newPasswordUpdatePassword" /></td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td><button id="updatePasswordButton">Submit</button></td>                                  
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td><label for="updatePasswordResponseCode">Response
+                            Code</label></td>
+                    <td><pre id="updatePasswordResponseCode"></pre></td>
+                </tr>
+                <tr>
+                    <td><label for="updatePasswordResponse">Response</label></td>
+                    <td><pre id="updatePasswordResponse"></pre></td>
+                </tr>
+            </tfoot>
+        </table>
+
+    </div>
+
+
+
+
+
+        <script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
+        <script type="text/javascript" src="/js/jquery-ui-1.8.17.custom.min.js"></script>
+        <script type="text/javascript">
+            var endpointApiUrl = "/api/";
+            $.ajaxSetup({
+                cache : false,
+                data : null
+            });
+            
+            $("#verifyUserMeButton").button().click(
+                    function() {
+                        $.ajax({
+                            type        : "GET",
+                            url         : endpointApiUrl + "oauth2/v1/user/me",
+                            dataType    : "text",
+                            error       : function(jqXHR, textStatus, errorThrown) {
+                                                $("#verifyUserMeButtonResponse").val("");
+                                            },
+                            success     : function(data, textStatus, jqXHR) {
+                                                $("#verifyUserMeButtonResponse").text(data);                                
+                                            },
+                            complete    : function(jqXHR, textStatus) {
+                                                $("#verifyUserMeButtonResponseCode").text(jqXHR.status + " " + jqXHR.statusText);
+                                            }
+                        });
+                    });
+            
+            $("#resetPasswordButton").button().click(
+                    function() {
+                        $.ajax({
+                            type        : "POST",
+                            url         : endpointApiUrl + "oauth2/v1/user/resetpassword",
+                            data        : {
+                                username : $("#emailResetPassword").val()
+                            },
+                            dataType    : "text",
+                            error       : function(jqXHR, textStatus, errorThrown) {                                
+                                                $("#resetPasswordResponse").val("");
+                                            },
+                            success     : function(data, textStatus, jqXHR) {
+                                                $("#resetPasswordResponse").text(data);
+                                            },
+                            complete    : function(jqXHR, textStatus) {
+                                                $("#resetPasswordResponseCode").text(jqXHR.status + " " + jqXHR.statusText);
+                                            }
+                        });
+                    });
+            
+            
+            $("#confirmPasswordButton").button().click(
+                    function() {
+                        $.ajax({
+                            type        : "POST",
+                            url         : endpointApiUrl + "oauth2/v1/user/resetpasswordconfirm",
+                            data        : {
+                                resetPasswordToken : $("#resetPasswordToken").val(),
+                                newPassword : $("#resetNewPassword").val()
+                            },
+                            dataType    : "text",
+                            error       : function(jqXHR, textStatus, errorThrown) {                                
+                                                $("#resetPasswordResponse").val("");
+                                            },
+                            success     : function(data, textStatus, jqXHR) {
+                                                $("#resetPasswordResponse").text(data);
+                                            },
+                            complete    : function(jqXHR, textStatus) {
+                                                $("#resetPasswordResponseCode").text(jqXHR.status + " " + jqXHR.statusText);
+                                            }
+                        });
+                    });
+            $("#activateAccountTokenButton").button().click(
+                    function() {
+                        $.ajax({
+                            type        : "POST",
+                            url         : endpointApiUrl + "oauth2/v1/user/activateconfirm",
+                            data        : {
+                                activateAccountToken : $("#activateAccountToken").val(),
+                            },
+                            dataType    : "text",
+                            error       : function(jqXHR, textStatus, errorThrown) {                                
+                                                $("#activateAccountTokenResponse").val("");
+                                            },
+                            success     : function(data, textStatus, jqXHR) {
+                                                $("#activateAccountTokenResponse").text(data);
+                                            },
+                            complete    : function(jqXHR, textStatus) {
+                                                $("#activateAccountTokenResponseCode").text(jqXHR.status + " " + jqXHR.statusText);
+                                            }
+                        });
+                    });
+            
+            $("#signupUserButton").button().click(
+                    function() {
+                        $.ajax({
+                            type        : "POST",
+                            url         : endpointApiUrl + "oauth2/v1/user",
+                            data        : {
+                                username : $("#loginNameSignupUser").val(),
+                                password : $("#loginPasswordSignupUser").val(),
+                            },
+                            dataType    : "text",
+                            error       : function(jqXHR, textStatus, errorThrown) {                                    
+                                                $("#signupUserResponse").val("");
+                                            },
+                            success     : function(data, textStatus, jqXHR) {
+                                                $("#signupUserResponse").text(data);
+                                            },
+                            complete    : function(jqXHR, textStatus) {
+                                                $("#signupUserResponseCode").text(jqXHR.status + " " + jqXHR.statusText);
+                                            }
+                        });
+                    });
+            
+            $("#signupUserPendingButton").button().click(
+                    function() {
+                        $.ajax({
+                            type        : "POST",
+                            url         : endpointApiUrl + "oauth2/v1/user",
+                            data        : {
+                                username : $("#userNamePending").val(),
+                                password : $("#userPasswordPending").val(),
+                                state : $("#statePending").val(),
+                                appType : $("#appTypePending").val()
+                            },
+                            dataType    : "text",
+                            error       : function(jqXHR, textStatus, errorThrown) {                                    
+                                                $("#signupUserPendingResponse").val("");
+                                            },
+                            success     : function(data, textStatus, jqXHR) {
+                                                $("#signupUserPendingResponse").text(data);
+                                            },
+                            complete    : function(jqXHR, textStatus) {
+                                                $("#signupUserPendingResponseCode").text(jqXHR.status + " " + jqXHR.statusText);
+                                            }
+                        });
+                    });
+            
+            $("#updatePasswordButton").button().click(
+                    function() {
+                        $.ajax({
+                            type        : "POST",
+                            url         : endpointApiUrl + "oauth2/v1/user/password",
+                            data        : {
+                                oldPassword : $("#oldPasswordUpdatePassword").val(),
+                                newPassword : $("#newPasswordUpdatePassword").val(),
+                            },
+                            dataType    : "text",
+                            error       : function(jqXHR, textStatus, errorThrown) {                                
+                                                $("#updatePasswordResponse").val("");
+                                            },
+                            success     : function(data, textStatus, jqXHR) {
+                                                $("#updatePasswordResponse").text(data);
+                                            },
+                            complete    : function(jqXHR, textStatus) {
+                                                $("#updatePasswordResponseCode").text(jqXHR.status + " " + jqXHR.statusText);
+                                            }
+                        });
+                    });
+            $("#verifyLoginButton").button().click(
+                    function() {
+                        $.ajax({
+                            type        : "POST",
+                            url         : endpointApiUrl + "oauth2/token",
+                            data        : {
+                                username : $("#loginNameVerifyLogin").val(),
+                                password : $("#passwordVerifyLogin").val(),
+                                grant_type : "password"
+                            },
+                            dataType    : "text",
+                            error       : function(jqXHR, textStatus, errorThrown) {
+                                                $("#verifyLoginResponse").val("");
+                                            },
+                            success     : function(data, textStatus, jqXHR) {
+                                                $("#verifyLoginResponse").text(data);
+                                            },
+                            complete : function(jqXHR, textStatus) {
+                                                $("#verifyLoginResponseCode").text(jqXHR.status + " " + jqXHR.statusText);
+                                            }
+                        });
+                    });
+        </script>
+        </script>
+</body>
+</html>

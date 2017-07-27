@@ -1,0 +1,533 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Admin Page</title>
+
+<link type="text/css" href="/css/blitzer/jquery-ui-1.8.17.custom.css"
+    rel="stylesheet" />
+</head>
+<body>
+    <div>
+        Create Ugly form for the following REST-APIs : 
+        http://archive.goldengekko.com/archive/user-security-mgmt/1.0.2/ <br/>
+        <span style="color:red;">Admin Page</span>
+
+        <ul>
+            <li>authenticateUserClientCredentialsType()</li>
+            <li>createUser()</li>
+            <li>getUserDetailInfo()</li>
+            <li>getUserWithPagination()</li>
+            <li>updateUserRole()</li>
+            <li>updateUserState()</li>
+
+        </ul>
+    </div>
+    <div id="header" class="ui-widget"></div>
+    <div id="contents" class="ui-widget">
+        
+        <h3>LogIn Authorization /verify login with resource owner
+            password</h3>
+        <table class="ui-widget ui-widget-content">
+            <thead class="ui-widget-header">
+                <tr>
+                    <th>POST</th>
+                    <th>/api/oauth2/token</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span>Login Name</span></td>
+                    <td><input type="text" value="root@goldengekko.com" id="loginNameVerifyLogin" /></td>
+                </tr>
+                <tr>
+                    <td><span>Password</span></td>
+                    <td><input type="password" value="tVeQxsuazfAhGNgrd1PWua29f" id="passwordVerifyLogin" /></td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td><button id="verifyLoginButton">Submit</button></td>                                         
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td><label for="verifyLoginResponseCode">Response Code</label></td>
+                    <td><pre id="verifyLoginResponseCode"></pre></td>
+                </tr>
+                <tr>
+                    <td><label for="verifyLoginResponse">Response</label></td>
+                    <td><pre id="verifyLoginResponse"></pre></td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <h3>Create a new user type client credentials</h3>
+        <table class="ui-widget ui-widget-content">
+            <thead class="ui-widget-header">
+                <tr>
+                    <th>POST</th>
+                    <th>/api/admin/oauth2/v1/user</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span>clientId</span></td>
+                    <td><input type="text" id="userNameCreateNewUser" /></td>
+                </tr>
+                <tr>
+                    <td><span>client Secret</span></td>
+                    <td><input type="text" id="userSecretCreateNewUser" /></td>
+                </tr>
+                <tr>
+                    <td><span>Expire Policy</span></td>
+                    <td> <select id="expirePolicy">
+                               <option value="0"> After Login</option>
+                               <option value="1"> Last Access</option>
+                         </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span>Expire in Seconds </span></td>
+                    <td> <input type="text" id="expireInSeconds" value="14400"/>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td></td>
+                    <td><button id="createNewUserButton">Submit</button></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td><label for="createNewUserResponseCode">Response
+                            Code</label></td>
+                    <td><pre id="createNewUserResponseCode"></pre></td>
+                </tr>
+                <tr>
+                    <td><label for="createNewUserResponse">Response</label></td>
+                    <td><pre id="createNewUserResponse"></pre></td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <h3>Get user detail info</h3>
+        <table class="ui-widget ui-widget-content">
+            <thead class="ui-widget-header">
+                <tr>
+                    <th>GET</th>
+                    <th>/api/admin/oauth2/v1/user/{userId}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span>User Id</span></td>
+                    <td><input type="text" id="userIdGetUserDetailInfo" /></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><button id="getUserDetailInfoButton">Submit</button></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td><label for="getUserDetailInfoResponseCode">Response
+                            Code</label></td>
+                    <td><pre id="getUserDetailInfoResponseCode"></pre></td>
+                </tr>
+                <tr>
+                    <td><label for="getDetailUserInfoResponse">Response</label></td>
+                    <td><pre id="getDetailUserInfoResponse"></pre></td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <h3>Get user with pagination</h3>
+        <table class="ui-widget ui-widget-content">
+            <thead class="ui-widget-header">
+                <tr>
+                    <th>GET</th>
+                    <th>/api/admin/oauth2/v1/user</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span>User type( 1 type resource user_owner, 2
+                            client_credentials , 3 socialType )</span></td>
+                    <td><input type="text" id="userTypeGetUserWithPagination" /></td>
+                </tr>
+                <tr>
+                    <td><span>Page Size</span></td>
+                    <td><input type="text" id="pageSizeGetUserWithPagination" /></td>
+                </tr>
+                <tr>
+                    <td><span>Cursor key</span></td>
+                    <td><input type="text" id="cursorKeyGetUserWithPagination" /></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><button id="getUserWithPaginationButton">Submit</button></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td><label for="getUserWithPaginationResponseCode">Response
+                            Code</label></td>
+                    <td><pre id="getUserWithPaginationResponseCode"></pre></td>
+                </tr>
+                <tr>
+                    <td><label for="getUserWithPaginationResponse">Response</label></td>
+                    <td><pre id="getUserWithPaginationResponse"></pre></td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <h3>Update user role</h3>
+        <table class="ui-widget ui-widget-content">
+            <thead class="ui-widget-header">
+                <tr>
+                    <th>POST</th>
+                    <th>/api/admin/oauth2/v1/user/{userId}/roles</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span>User Id</span></td>
+                    <td><input type="text" id="userIdUpdateUserRole" /></td>
+                </tr>
+                <tr>
+                    <td><span>User Roles</span></td>
+                    <td><input type="text" id="rolesUpdateUserRole" /></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><button id="updateUserRoleButton">Submit</button></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td><label for="updateUserRoleResponseCode">Response
+                            Code</label></td>
+                    <td><pre id="updateUserRoleResponseCode"></pre></td>
+                </tr>
+                <tr>
+                    <td><label for="updateUserRoleResponse">Response</label></td>
+                    <td><pre id="updateUserRoleResponse"></pre></td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <h3>Update user-state</h3>
+        <table class="ui-widget ui-widget-content">
+            <thead class="ui-widget-header">
+                <tr>
+                    <th>POST</th>
+                    <th>/api/admin/oauth2/v1/user/{userId}/state</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span>userId </span></td>
+                    <td><input type="text" id="updateStateUserId" /></td>
+                </tr>
+
+                <tr>
+                    <td><span>State ( 1 acitve, -1 inactive)</span></td>
+                    <td><input type="text" id="updateStateState" value="-1" /></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><button id="updateStateButton">Submit</button></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td><label for="updateStateResponseCode">Response Code</label></td>
+                    <td><pre id="updateStateResponseCode"></pre></td>
+                </tr>
+                <tr>
+                    <td><label for="updateStateResponse">Response</label></td>
+                    <td><pre id="updateStateResponse"></pre></td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
+        <script type="text/javascript" src="/js/jquery-ui-1.8.17.custom.min.js"></script>
+        <script type="text/javascript">
+            var endpointApiUrl ="/api/";
+            $.ajaxSetup({
+                cache : false,
+                data : null,
+            });
+            
+            $("#createNewUserButton").button().click(
+                    function() {
+                        $.ajax({
+                            type        : "POST",
+                            url         : endpointApiUrl + "admin/oauth2/v1/user",
+                            data        : {
+                                clientId        : $("#userNameCreateNewUser").val(),
+                                clientSecret    : $("#userSecretCreateNewUser").val(),
+                                type            : "client_credentials",
+                                expirePolicy    : $("#expirePolicy").val(),
+                                expireInSeconds    : $("#expireInSeconds").val(),
+
+                            },
+                            dataType    : "text",
+                            error       : function(jqXHR, textStatus, errorThrown) {                    
+                                                $("#createNewUserResponse").val("");
+                                            },
+                            success     : function(data, textStatus, jqXHR) {
+                                                $("#createNewUserResponse").text(data);
+                                            },
+                            complete    : function(jqXHR, textStatus) {
+                                                $("#createNewUserResponseCode").text(jqXHR.status + " " + jqXHR.statusText);
+                                            }
+                        });
+                    });
+
+            $("#getUserDetailInfoButton").button().click(
+                    function() {
+                        $.ajax({
+                            type        : "GET",
+                            url         : endpointApiUrl + "admin/oauth2/v1/user/" + $("#userIdGetUserDetailInfo").val(),
+                            dataType    : "text",
+                            error       : function(jqXHR, textStatus, errorThrown) {
+                                                $("#getDetailUserInfoResponse").val("");
+                                            },
+                            success     : function(data, textStatus, jqXHR) {                                               
+                                                $("#getDetailUserInfoResponse").text(data);
+                                            },
+                            complete    : function(jqXHR, textStatus) {
+                                                $("#getUserDetailInfoResponseCode").text(jqXHR.status + " " + jqXHR.statusText);
+                                            }
+                        });
+                    });
+
+            $("#getUserWithPaginationButton").button().click(
+                    function() {
+                        var userType = $("#userTypeGetUserWithPagination").val().trim();
+                        var pageSize = $("#pageSizeGetUserWithPagination").val().trim();
+                        var cursorKey = $("#cursorKeyGetUserWithPagination").val().trim();
+                        if(userType && pageSize && cursorKey){
+                            $.ajax({
+                                type        : "GET",
+                                url         : endpointApiUrl + "admin/oauth2/v1/user",
+                                data        : {
+                                        type        : userType,  
+                                        pagesize    : pageSize, 
+                                        cursorkey   : cursorKey,    
+                                },
+                                dataType    : "text",
+                                error       : function(jqXHR, textStatus, errorThrown) {
+                                                    $("#getUserWithPaginationResponse").val("");
+                                                },
+                                success     : function(data, textStatus, jqXHR) {                               
+                                                    $("#getUserWithPaginationResponse").text(data);
+                                                },
+                                complete    : function(jqXHR, textStatus) {
+                                                    $("#getUserWithPaginationResponseCode").text(jqXHR.status + " " + jqXHR.statusText);
+                                                }
+                            });
+                        }else if(userType && pageSize){
+                            $.ajax({
+                                type        : "GET",
+                                url         : endpointApiUrl + "admin/oauth2/v1/user",
+                                data        : {
+                                        type        : userType,  
+                                        pagesize    : pageSize, 
+                                },
+                                dataType    : "text",
+                                error       : function(jqXHR, textStatus, errorThrown) {
+                                                    $("#getUserWithPaginationResponse").val("");
+                                                },
+                                success     : function(data, textStatus, jqXHR) {                               
+                                                    $("#getUserWithPaginationResponse").text(data);
+                                                },
+                                complete    : function(jqXHR, textStatus) {
+                                                    $("#getUserWithPaginationResponseCode").text(jqXHR.status + " " + jqXHR.statusText);
+                                                }
+                            });
+                        }else if(userType && cursorKey){
+                            $.ajax({
+                                type        : "GET",
+                                url         : endpointApiUrl + "admin/oauth2/v1/user",
+                                data        : {
+                                        type        : userType,  
+                                        cursorkey   : cursorKey,    
+                                },
+                                dataType    : "text",
+                                error       : function(jqXHR, textStatus, errorThrown) {
+                                                    $("#getUserWithPaginationResponse").val("");
+                                                },
+                                success     : function(data, textStatus, jqXHR) {                               
+                                                    $("#getUserWithPaginationResponse").text(data);
+                                                },
+                                complete    : function(jqXHR, textStatus) {
+                                                    $("#getUserWithPaginationResponseCode").text(jqXHR.status + " " + jqXHR.statusText);
+                                                }
+                            });
+                            
+                        }else if(pageSize && cursorKey){
+                            $.ajax({
+                                type        : "GET",
+                                url         : endpointApiUrl + "admin/oauth2/v1/user",
+                                data        : { 
+                                        pagesize    : pageSize, 
+                                        cursorkey   : cursorKey,    
+                                },
+                                dataType    : "text",
+                                error       : function(jqXHR, textStatus, errorThrown) {
+                                                    $("#getUserWithPaginationResponse").val("");
+                                                },
+                                success     : function(data, textStatus, jqXHR) {                               
+                                                    $("#getUserWithPaginationResponse").text(data);
+                                                },
+                                complete    : function(jqXHR, textStatus) {
+                                                    $("#getUserWithPaginationResponseCode").text(jqXHR.status + " " + jqXHR.statusText);
+                                                }
+                            });
+                            
+                        }else if(userType){
+                            $.ajax({
+                                type        : "GET",
+                                url         : endpointApiUrl + "admin/oauth2/v1/user",
+                                data        : {
+                                        type        : userType,     
+                                },
+                                dataType    : "text",
+                                error       : function(jqXHR, textStatus, errorThrown) {
+                                                    $("#getUserWithPaginationResponse").val("");
+                                                },
+                                success     : function(data, textStatus, jqXHR) {                               
+                                                    $("#getUserWithPaginationResponse").text(data);
+                                                },
+                                complete    : function(jqXHR, textStatus) {
+                                                    $("#getUserWithPaginationResponseCode").text(jqXHR.status + " " + jqXHR.statusText);
+                                                }
+                            });
+                            
+                        }else if(pageSize){
+                            $.ajax({
+                                type        : "GET",
+                                url         : endpointApiUrl + "admin/oauth2/v1/user",
+                                data        : {
+                                        pagesize    : pageSize, 
+                                },
+                                dataType    : "text",
+                                error       : function(jqXHR, textStatus, errorThrown) {
+                                                    $("#getUserWithPaginationResponse").val("");
+                                                },
+                                success     : function(data, textStatus, jqXHR) {                               
+                                                    $("#getUserWithPaginationResponse").text(data);
+                                                },
+                                complete    : function(jqXHR, textStatus) {
+                                                    $("#getUserWithPaginationResponseCode").text(jqXHR.status + " " + jqXHR.statusText);
+                                                }
+                            });
+                            
+                        }else if(cursorKey){
+                            $.ajax({
+                                type        : "GET",
+                                url         : endpointApiUrl + "admin/oauth2/v1/user",
+                                data        : {
+                                        cursorkey   : cursorKey,    
+                                },
+                                dataType    : "text",
+                                error       : function(jqXHR, textStatus, errorThrown) {
+                                                    $("#getUserWithPaginationResponse").val("");
+                                                },
+                                success     : function(data, textStatus, jqXHR) {                               
+                                                    $("#getUserWithPaginationResponse").text(data);
+                                                },
+                                complete    : function(jqXHR, textStatus) {
+                                                    $("#getUserWithPaginationResponseCode").text(jqXHR.status + " " + jqXHR.statusText);
+                                                }
+                            });
+                            
+                        }else{
+                            $.ajax({
+                                type        : "GET",
+                                url         : endpointApiUrl + "admin/oauth2/v1/user",
+                                dataType    : "text",
+                                error       : function(jqXHR, textStatus, errorThrown) {
+                                                    $("#getUserWithPaginationResponse").val("");
+                                                },
+                                success     : function(data, textStatus, jqXHR) {                               
+                                                    $("#getUserWithPaginationResponse").text(data);
+                                                },
+                                complete    : function(jqXHR, textStatus) {
+                                                    $("#getUserWithPaginationResponseCode").text(jqXHR.status + " " + jqXHR.statusText);
+                                                }
+                            });
+                            
+                        }
+                    });
+
+            $("#updateUserRoleButton").button().click(
+                    function() {
+                        $.ajax({
+                            type        : "POST",
+                            url         : endpointApiUrl + "admin/oauth2/v1/user/"+ $("#userIdUpdateUserRole").val() + "/roles",
+                            data        : {
+                                roles : $("#rolesUpdateUserRole").val().split(","),
+                            },
+                            dataType    : "text",
+                            error       : function(jqXHR, textStatus, errorThrown) {
+                                                $("#updateUserRoleResponse").val("");
+                                            },                                                                              
+                            success     : function(data, textStatus, jqXHR) {
+                                                $("#updateUserRoleResponse").text(data);
+                                            },
+                            complete    : function(jqXHR, textStatus) {
+                                                $("#updateUserRoleResponseCode").text(jqXHR.status + " " + jqXHR.statusText);
+                                            }
+                        });
+                    });
+            $("#updateStateButton").button().click(
+                    function() {
+                        $.ajax({
+                            type        : "POST",
+                            url         : endpointApiUrl + "admin/oauth2/v1/user/" + $("#updateStateUserId").val() + "/state",
+                            data        : {
+                                state : $("#updateStateState").val()
+                            },
+                            dataType    : "text",
+                            error       : function(jqXHR, textStatus, errorThrown) { 
+                                                $("#updateStateResponse").val("");
+                                            },
+                            success     : function(data, textStatus, jqXHR) {
+                                                $("#updateStateResponse").text(data);
+                                            },
+                            complete    : function(jqXHR, textStatus) {
+                                                $("#updateStateResponseCode").text(jqXHR.status + " " + jqXHR.statusText);
+                                            }
+                        });
+                    });
+            
+            $("#verifyLoginButton").button().click(
+                    function() {
+                        $.ajax({
+                            type        : "POST",
+                            url         : endpointApiUrl + "oauth2/token",
+                            data        : {
+                                username : $("#loginNameVerifyLogin").val(),
+                                password : $("#passwordVerifyLogin").val(),
+                                grant_type : "password"
+                            },
+                            dataType    : "text",
+                            error       : function(jqXHR, textStatus, errorThrown) {
+                                                $("#verifyLoginResponse").val("");
+                                            },
+                            success     : function(data, textStatus, jqXHR) {
+                                                $("#verifyLoginResponse").text(data);
+                                            },
+                            complete : function(jqXHR, textStatus) {
+                                                $("#verifyLoginResponseCode").text(jqXHR.status + " " + jqXHR.statusText);
+                                            }
+                        });
+                    });
+        </script>
+</body>
+</html>

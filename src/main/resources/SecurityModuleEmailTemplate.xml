@@ -1,0 +1,86 @@
+<SecurityModuleEmailTemplates>
+
+    <!-- Uncomment the EmailManager below if not hosted in GAE, and  supply any missing values
+     <EmailManager mailHost="smtp.gmail.com"  port="25" 
+                       mailUsername="user@gmail.com"    mailPassword="password" 
+                            protocol="smtp"  smtpAuthEnable="false"  smtpStarttlsEnable="false"  
+    debugEnable="true"/> -->
+    
+    <EmailManager mailHost="smtp.office365.com"  port="587" mailUsername="isicaccounts@isic.org" mailPassword="Breyehe3"
+                            protocol="smtp"  smtpAuthEnable="true"  smtpStarttlsEnable="true"
+    debugEnable="true"/>
+    
+    <!-- LinkBaseUri
+     For web if resetpasswordconfirm.html in backend , ${baseUrl} will replace with backend server base url
+     If the resetpassword is stored external side : you can put full url : http://webapp.company.com/resetpasswordconfirm.html
+     
+     The service will append request param resetPasswordToken to url
+     ex : 
+     iOS : com.universe.reset://reset?resetPasswordToken=dfdfaf 
+     android: com.universe.reset?resetPasswordToken=dfdfaf
+     web : http://localhost:8080/resetpasswordconfirm.html?resetPasswordToken=dfdfaf
+     -->
+    <LinkBaseUri iOS="${baseUrl}/resetpasswordconfirm.html" android="${baseUrl}/resetpasswordconfirm.html" web="${baseUrl}/resetpasswordconfirm.html" />
+    
+    
+     <!-- deepLinking for activation  -->
+ <!-- ActiveLinkBaseUri For web if activateAccount.html in backend , ${baseUrl} 
+    will replace with backend server url If the activateAccount is stored external 
+    side : you can put full url : http://webapp.company.com/activateAccount.html
+     
+    The service will append request param activateAccountToken to url ex : iOS 
+    : com.universe.reset?activateAccountToken=dfdfaf android: com.universe.reset?activateAccountToken=dfdfaf 
+    web : http://localhost:8080/activateAccountToken.html?activateAccountToken=dfdfaf -->
+   <ActiveLinkBaseUri iOS="${baseUrl}/activateAccount.html" android="${baseUrl}/activateAccount.html" web="${baseUrl}/activateAccount.html" />
+    
+    
+    <Templates locale="en_US">
+    
+    <PasswordResetRequest subject="Reset ISIC Password">
+<![CDATA[
+<html><body>
+We received a request to reset the password associated with this e-mail address. If you made this request, please follow the instructions below.
+<p>
+<a href="${link}">Click here</a> to reset your password using our secure server.
+<p>
+<p>
+If you did not request to have your password reset you can safely ignore this email. Rest assured your account is safe.
+<p>
+If clicking the link doesn't seem to work, you can copy and paste the link into your browser's address window, or retype it there. After using the link, we will give instructions for resetting your password.
+</body></html>
+]]>
+    </PasswordResetRequest>
+    <PasswordResetConfirmation subject="Password successfully reset">
+<![CDATA[
+<html><body>
+<div>Per your request, we have successfully changed your password.</div>
+<div><a href="${baseUrl}/login.html">Click here</a> to login on web site.</div>
+</body></html>
+]]>
+    </PasswordResetConfirmation>
+    
+     <!-- activation account signup as a new user -->
+    <ActivateAccount subject="ISIC Account Activation">
+  <![CDATA[
+<html><body>
+  <div>
+  You are one step away from completing your ISIC signup. <a href="${link}">Click here</a> to activate your account.
+  </div>
+</body></html>
+  ]]>
+    </ActivateAccount>
+    <ActivateAccountConfirmation subject="Welcome to ISIC!">
+    <![CDATA[
+<html><body>
+<div>Greetings from ISIC!</div>
+<div>Thank you for registering. Now you can explore thousands of discounts around the world. You can also use your virtual card to get these discounts.</div>
+<div><a href="${baseUrl}/login.html">Click here</a> to login on web site.</div>
+
+<div>All the best,<br/>ISIC</div>
+</body></html>
+    ]]>
+    </ActivateAccountConfirmation>
+    
+    </Templates>
+    
+</SecurityModuleEmailTemplates>

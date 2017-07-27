@@ -1,0 +1,43 @@
+<html>
+<head>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script>
+function getFragmentByName(name) {
+
+	var match = RegExp('[&#]' + name + '=([^&]*)')
+			.exec(window.location.hash);
+
+	return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+}
+
+function getParameterByName(name) {
+
+	var match = RegExp('[?&]' + name + '=([^&]*)')
+						.exec(window.location.search);
+
+	return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+}
+
+$(function() { 
+	$.getJSON('/api/endpoints') 
+		.done(function(endpoints) { 
+			$("#googleSignin").attr("href", endpoints.oauthGoogleUrl);
+	        
+			$.getJSON(endpoints.apiUrl + 'oauth2/token', 
+				{providerId:getParameterByName('providerId'),
+				 access_token:getFragmentByName('access_token'),
+				 expires_in:getFragmentByName('expires_in'),
+				 grant_type:'token'})
+				 .done(function(connection) {
+				 	alert(connection.userId);
+				 });
+				 
+		});
+});
+</script>
+</head>
+<body>
+Hello
+<a id="googleSignin" href="#">You're signed in but now you should grab the 'access_token' and invoke /api/oauth2/token</a>
+</body>
+</html>

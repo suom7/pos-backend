@@ -26,13 +26,16 @@ import com.backend.dao.CategoryDao;
 import com.backend.domain.Category;
 import com.backend.domain.Field;
 import com.backend.json.ResponseList;
+import com.sma.security.annotation.Authorization;
+import com.sma.security.interceptor.UserRole;
 
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
-@RequestMapping("/api/categories")
+@RequestMapping("/categories")
 @Slf4j
+@Authorization(userRoles = {UserRole.ROLE_ANONYMOUS})
 public class CategoryController {
 
     @Resource(name = "categoryDaoImpl")
